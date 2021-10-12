@@ -1,25 +1,29 @@
 package gui;
 
-import automata.GameOfLife;
+import automata.SimulationDisplayer;
+import automata.Simulator;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 
 public class SimulationPanel extends javax.swing.JPanel {
 
-    private GameOfLife gameOfLife;
+    private SimulationDisplayer simulation;
     public SimulationPanel() {
 	initComponents();
     }
     
-    public void setGameOfLife(GameOfLife gameOfLife) {
-	this.gameOfLife = gameOfLife;
+    public void setSimulator(Simulator simulator) {
+	if(simulation == null)
+	    simulation = new SimulationDisplayer(simulator);
+	else
+	    simulation.setSimulator(simulator);
     }
     
     @Override
     protected void paintComponent(Graphics g1) {
 	Graphics2D g = (Graphics2D)g1;
-	if(gameOfLife != null)gameOfLife.draw(g, getWidth(), getHeight());
+	if(simulation != null)simulation.draw(g, getWidth(), getHeight());
     }
 
 

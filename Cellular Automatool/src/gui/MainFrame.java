@@ -1,18 +1,18 @@
 package gui;
 
-import automata.GameOfLife;
+import automata.Simulator;
 import javax.swing.Timer;
 
 public class MainFrame extends javax.swing.JFrame {
     
-    private GameOfLife gameOfLife;
+    private Simulator simulator;
     
     public MainFrame() {
 	initComponents();
-	gameOfLife = new GameOfLife(120, 120);
-	simulationPanel.setGameOfLife(gameOfLife);
-	Timer timer = new Timer(30, (t) -> {
-	    gameOfLife.update();
+	simulator = new Simulator(120, 120);
+	simulationPanel.setSimulator(simulator);
+	Timer timer = new Timer(100, (t) -> {
+	    simulator.update();
 	    simulationPanel.repaint();
 	});
 	timer.start();
