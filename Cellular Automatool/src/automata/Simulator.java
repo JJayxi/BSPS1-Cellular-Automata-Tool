@@ -10,7 +10,7 @@ public class Simulator {
     GameOfLife gameOfLife = new GameOfLife();
     
     public Simulator(int gridWidth, int gridHeight) {
-	stats = new Stats();
+	stats = new Stats(gridWidth, gridHeight);
 	
 	this.gridHeight = gridHeight;
 	this.gridWidth = gridWidth;
@@ -51,5 +51,9 @@ public class Simulator {
 	if(y + 1 < gridHeight)	    count[grid[y + 1][x    ]]++;
 	
 	return gameOfLife.evaluate(count, grid[y][x]);
+    }
+    
+    public Stats getStats() {
+	return stats;
     }
 }
