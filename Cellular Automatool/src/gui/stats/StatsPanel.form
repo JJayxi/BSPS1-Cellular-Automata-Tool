@@ -82,7 +82,7 @@
         <Property name="text" type="java.lang.String" value="States"/>
       </Properties>
     </Component>
-    <Container class="gui.stats.GraphPanel" name="stateGraphPanel">
+    <Container class="gui.stats.ActivityGraphPanel" name="stateGraphPanel">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -102,7 +102,7 @@
         <Property name="text" type="java.lang.String" value="Activity"/>
       </Properties>
     </Component>
-    <Container class="gui.stats.GraphPanel" name="activityGraphPanel">
+    <Container class="gui.stats.ActivityGraphPanel" name="activityGraphPanel">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -122,7 +122,7 @@
         <Property name="text" type="java.lang.String" value="Rules used"/>
       </Properties>
     </Component>
-    <Container class="gui.stats.GraphPanel" name="rulesUsedGraphPanel">
+    <Container class="gui.stats.ActivityGraphPanel" name="rulesUsedGraphPanel">
 
       <Layout>
         <DimensionLayout dim="0">

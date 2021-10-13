@@ -12,10 +12,12 @@ public class MainFrame extends javax.swing.JFrame {
 	simulator = new Simulator(120, 120);
 	simulationPanel.setSimulator(simulator);
 	activityPanel.setStats(simulator.getStats());
+	cellCountGraphPanel.setStats(simulator.getStats());
 	Timer timer = new Timer(30, (t) -> {
 	    simulator.update();
 	    simulationPanel.repaint();
 	    activityPanel.repaint();
+	    cellCountGraphPanel.repaint();
 	});
 	timer.start();
     }
@@ -25,7 +27,8 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         simulationPanel = new gui.SimulationPanel();
-        activityPanel = new gui.stats.GraphPanel();
+        activityPanel = new gui.stats.ActivityGraphPanel();
+        cellCountGraphPanel = new gui.stats.CellCountGraphPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,6 +54,17 @@ public class MainFrame extends javax.swing.JFrame {
             .addGap(0, 155, Short.MAX_VALUE)
         );
 
+        javax.swing.GroupLayout cellCountGraphPanelLayout = new javax.swing.GroupLayout(cellCountGraphPanel);
+        cellCountGraphPanel.setLayout(cellCountGraphPanelLayout);
+        cellCountGraphPanelLayout.setHorizontalGroup(
+            cellCountGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        cellCountGraphPanelLayout.setVerticalGroup(
+            cellCountGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 168, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -58,7 +72,9 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(simulationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(activityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(activityPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cellCountGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 76, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -67,6 +83,8 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(activityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cellCountGraphPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -107,7 +125,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.stats.GraphPanel activityPanel;
+    private gui.stats.ActivityGraphPanel activityPanel;
+    private gui.stats.CellCountGraphPanel cellCountGraphPanel;
     private gui.SimulationPanel simulationPanel;
     // End of variables declaration//GEN-END:variables
 }

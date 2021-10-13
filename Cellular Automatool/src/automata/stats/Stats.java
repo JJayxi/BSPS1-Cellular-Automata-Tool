@@ -36,9 +36,28 @@ public class Stats {
 	}
     }
     public void showCellCount(Graphics2D g, int width, int height) {
-	    int[][] polygonsX = new int[2][activity.size() + 2];
-	    int[][] polygonsY = new int[2][activity.size() + 2];
+	    int[] polygonsX = new int[activity.size() * 2];
+	    int[][] polygonsY = new int[2][activity.size() * 2];
+	    float dw = (float) width / activity.size();
 	    
+	    g.setColor(Color.white);
+	    g.fillRect(0, 0, width, height);
+	    
+	    for(int i = 0; i < cellCounting.size(); i++) {
+		polygonsX[i] = polygonsX[polygonsX.length - i - 1] = (int)(i * dw);
+		
+		float h = 0;
+		for(int state = 0; state < polygonsY.length; state++) {
+		    polygonsY[state][i] = (int)(h * height);
+		    h += cellCounting.get(i)[state] / ((float)gridWidth * gridHeight);
+		    polygonsY[state][polygonsX.length - 1 - i] = (int)(h * height);
+		}
+	    }
+	    
+	    for(int state = 0; state < polygonsY.length; state++) {
+		g.setColor(Color.getHSBColor((float)(Math.sin(state + 4) * 913) % 1, 1, 1));
+		g.fillPolygon(polygonsX, polygonsY[state], activity.size() * 2);
+	    }
 	    
     }
 }

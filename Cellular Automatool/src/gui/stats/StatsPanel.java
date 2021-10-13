@@ -29,11 +29,11 @@ public class StatsPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        stateGraphPanel = new gui.stats.GraphPanel();
+        stateGraphPanel = new gui.stats.ActivityGraphPanel();
         jLabel3 = new javax.swing.JLabel();
-        activityGraphPanel = new gui.stats.GraphPanel();
+        activityGraphPanel = new gui.stats.ActivityGraphPanel();
         jLabel4 = new javax.swing.JLabel();
-        rulesUsedGraphPanel = new gui.stats.GraphPanel();
+        rulesUsedGraphPanel = new gui.stats.ActivityGraphPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -133,14 +133,14 @@ public class StatsPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.stats.GraphPanel activityGraphPanel;
+    private gui.stats.ActivityGraphPanel activityGraphPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private gui.stats.GraphPanel rulesUsedGraphPanel;
-    private gui.stats.GraphPanel stateGraphPanel;
+    private gui.stats.ActivityGraphPanel rulesUsedGraphPanel;
+    private gui.stats.ActivityGraphPanel stateGraphPanel;
     // End of variables declaration//GEN-END:variables
 }

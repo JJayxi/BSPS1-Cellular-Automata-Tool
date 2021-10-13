@@ -5,11 +5,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 
-public class GraphPanel extends javax.swing.JPanel {
+public class ActivityGraphPanel extends javax.swing.JPanel {
     
     private Stats stats;
 
-    public GraphPanel() {
+    public ActivityGraphPanel() {
 	initComponents();
     }
     
