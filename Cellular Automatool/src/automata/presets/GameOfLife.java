@@ -1,8 +1,15 @@
-package automata;
+package automata.presets;
 
-public class GameOfLife {
+import automata.Automaton;
+
+public class GameOfLife implements Automaton {
     
-
+    @Override
+    public int getNumberOfStates() {
+	return 2;
+    }
+    
+    @Override
     public int evaluate(int[] neighbourStateCount, int cellState) {
 
 	if(cellState == 1) {

@@ -1,5 +1,6 @@
 package automata;
 
+import automata.presets.GameOfLife;
 import automata.stats.Stats;
 
 public class Simulator {
@@ -7,7 +8,7 @@ public class Simulator {
     protected int gridWidth, gridHeight;
     public Stats stats;
     
-    GameOfLife gameOfLife = new GameOfLife();
+    Automaton automaton = new GameOfLife();
     
     public Simulator(int gridWidth, int gridHeight) {
 	stats = new Stats(gridWidth, gridHeight);
@@ -17,7 +18,7 @@ public class Simulator {
 	grid = new int[gridHeight][gridWidth];
 	for(int i = 0; i < gridHeight; i++)
 	    for(int j = 0; j < gridWidth; j++) {
-		grid[i][j] = Math.random() < .5 ? 0 : 1;
+		grid[i][j] = (int)(Math.random() * automaton.getNumberOfStates());
 	    }
     }
     
@@ -50,7 +51,7 @@ public class Simulator {
 	if(y - 1 >= 0)		    count[grid[y - 1][x    ]]++;
 	if(y + 1 < gridHeight)	    count[grid[y + 1][x    ]]++;
 	
-	return gameOfLife.evaluate(count, grid[y][x]);
+	return automaton.evaluate(count, grid[y][x]);
     }
     
     public Stats getStats() {
