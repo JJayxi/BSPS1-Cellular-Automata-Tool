@@ -2,7 +2,7 @@ package automata.presets;
 
 import automata.Automaton;
 
-public class GameOfLife implements Automaton {
+public class GameOfLife implements Automaton{
     
     @Override
     public int getNumberOfStates() {

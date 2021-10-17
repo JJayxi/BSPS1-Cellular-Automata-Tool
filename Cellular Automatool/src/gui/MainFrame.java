@@ -9,7 +9,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     public MainFrame() {
 	initComponents();
-	simulator = new Simulator(120, 120);
+	simulator = new Simulator(200, 200);
 	simulationPanel.setSimulator(simulator);
 	activityPanel.setStats(simulator.getStats());
 	cellCountGraphPanel.setStats(simulator.getStats());

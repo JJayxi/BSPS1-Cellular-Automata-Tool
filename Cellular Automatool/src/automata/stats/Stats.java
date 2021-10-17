@@ -3,16 +3,19 @@ package automata.stats;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import util.MiscUtil;
 
 public class Stats {
     private ArrayList<Integer> activity = new ArrayList<>();
     private ArrayList<int[]> cellCounting = new ArrayList<>();
     
     private final int gridWidth, gridHeight;
+    private final int numberOfStates;
     
-    public Stats(int gridWidth, int gridHeight) {
+    public Stats(int gridWidth, int gridHeight, int numberOfStates) {
 	this.gridWidth = gridWidth;
 	this.gridHeight = gridHeight;
+	this.numberOfStates = numberOfStates;
     }
     
     public void addStepValues(int cellChange, int[] cellCount) {
@@ -37,7 +40,7 @@ public class Stats {
     }
     public void showCellCount(Graphics2D g, int width, int height) {
 	    int[] polygonsX = new int[activity.size() * 2];
-	    int[][] polygonsY = new int[2][activity.size() * 2];
+	    int[][] polygonsY = new int[numberOfStates][activity.size() * 2];
 	    float dw = (float) width / activity.size();
 	    
 	    g.setColor(Color.white);
@@ -55,7 +58,7 @@ public class Stats {
 	    }
 	    
 	    for(int state = 0; state < polygonsY.length; state++) {
-		g.setColor(Color.getHSBColor((float)(Math.sin(state + 4) * 913) % 1, 1, 1));
+		g.setColor(MiscUtil.colorFromState(state, numberOfStates));
 		g.fillPolygon(polygonsX, polygonsY[state], activity.size() * 2);
 	    }
 	    

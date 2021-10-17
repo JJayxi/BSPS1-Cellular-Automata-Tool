@@ -1,6 +1,6 @@
 package automata;
 
-import automata.presets.GameOfLife;
+import automata.presets.*;
 import automata.stats.Stats;
 
 public class Simulator {
@@ -8,10 +8,11 @@ public class Simulator {
     protected int gridWidth, gridHeight;
     public Stats stats;
     
-    Automaton automaton = new GameOfLife();
+    //	Automaton automaton = new GameOfLife();
+    Automaton automaton = new RockPaperScissors();
     
     public Simulator(int gridWidth, int gridHeight) {
-	stats = new Stats(gridWidth, gridHeight);
+	stats = new Stats(gridWidth, gridHeight, automaton.getNumberOfStates());
 	
 	this.gridHeight = gridHeight;
 	this.gridWidth = gridWidth;
@@ -23,7 +24,7 @@ public class Simulator {
     }
     
     public void update() {
-	int[] cellCount = new int[2];
+	int[] cellCount = new int[automaton.getNumberOfStates()];
 	int activity = 0;
 	int[][] newGrid = new int[gridHeight][gridWidth];
 	for(int i = 0; i < gridHeight; i++)
@@ -38,7 +39,7 @@ public class Simulator {
     }
     
     private int nextState(int x, int y) {
-	int[] count = new int[2];
+	int[] count = new int[automaton.getNumberOfStates()];
 	if(x - 1 >= 0){		    count[grid[y    ][x - 1]]++;
 	    if(y - 1 >= 0)	    count[grid[y - 1][x - 1]]++;
 	    if(y + 1 < gridHeight)  count[grid[y + 1][x - 1]]++;
