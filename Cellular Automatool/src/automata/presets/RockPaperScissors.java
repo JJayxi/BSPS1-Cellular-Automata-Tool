@@ -5,7 +5,7 @@ import automata.Automaton;
 public class RockPaperScissors implements Automaton {
     
     //0 = rock, 1 = paper, 2 = scissors
-    private final int N = 4;
+    private final int N = 6;
     @Override
     public int getNumberOfStates() {
 	return N;
@@ -15,7 +15,7 @@ public class RockPaperScissors implements Automaton {
     @Override
     public int evaluate(int[] neighbourStateCount, int cellState) {
 	
-	if(neighbourStateCount[(cellState + 1) % N] > threshold + Math.round(Math.random() * 2 - 1)) 
+	if(neighbourStateCount[(cellState + 1) % N] > threshold + Math.round(Math.random() * 4 - 3)) 
 	    return (cellState + 1) % N;
 	return cellState;
     }
