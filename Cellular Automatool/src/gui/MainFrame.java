@@ -13,7 +13,7 @@ public class MainFrame extends javax.swing.JFrame {
 	simulationPanel.setSimulator(simulator);
 	activityPanel.setStats(simulator.getStats());
 	cellCountGraphPanel.setStats(simulator.getStats());
-	Timer timer = new Timer(30, (t) -> {
+	Timer timer = new Timer(180, (t) -> {
 	    simulator.update();
 	    simulationPanel.repaint();
 	    activityPanel.repaint();

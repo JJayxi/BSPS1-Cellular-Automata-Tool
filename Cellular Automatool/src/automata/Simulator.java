@@ -1,5 +1,8 @@
 package automata;
 
+import automata.modular.ModularAutomaton;
+import automata.modular.Rule;
+import automata.modular.conditions.*;
 import automata.presets.*;
 import automata.stats.Stats;
 
@@ -8,10 +11,17 @@ public class Simulator {
     protected int gridWidth, gridHeight;
     public Stats stats;
     
-    //	Automaton automaton = new GameOfLife();
+    //Automaton automaton = new GameOfLife();
     Automaton automaton = new RockPaperScissors();
     
     public Simulator(int gridWidth, int gridHeight) {
+	
+	ModularAutomaton modularGoL = new ModularAutomaton(2);
+	modularGoL.addRule(new Rule(0, 1, new ConditionNeighbourStateEqual(1, 3)));
+	modularGoL.addRule(new Rule(1, 0, new ConditionNeighbourStateMoreThan(1, 3)));
+	modularGoL.addRule(new Rule(1, 0, new ConditionNeighbourStateLessThan(1, 2)));
+	//automaton = modularGoL;
+	
 	stats = new Stats(gridWidth, gridHeight, automaton.getNumberOfStates());
 	
 	this.gridHeight = gridHeight;

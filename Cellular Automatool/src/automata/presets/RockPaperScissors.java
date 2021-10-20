@@ -5,7 +5,7 @@ import automata.Automaton;
 public class RockPaperScissors implements Automaton {
     
     //0 = rock, 1 = paper, 2 = scissors
-    private final int N = 6;
+    private final int N = 4;
     @Override
     public int getNumberOfStates() {
 	return N;

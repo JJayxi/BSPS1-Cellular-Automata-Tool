@@ -10,6 +10,6 @@ public final class MiscUtil {
 	return Color.getHSBColor(
 		(float)state / numStates, 
 		1,
-		0.76f);
+		0.9f);
     }
 }

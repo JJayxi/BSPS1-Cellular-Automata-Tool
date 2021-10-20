@@ -8,8 +8,6 @@ public class SimulationDisplayer {
 
     private Simulator simulator;
 
-    private float xPosition, yPosition, zoom;
-
     public SimulationDisplayer(Simulator simulator) {
 	this.simulator = simulator;
     }
@@ -23,9 +21,8 @@ public class SimulationDisplayer {
 	float dy = width / simulator.gridWidth;
 	
 	Color[] cols = new Color[simulator.automaton.getNumberOfStates()];
-	for(int i = 0; i < cols.length; i++) {
+	for(int i = 0; i < cols.length; i++)
 	    cols[i] = MiscUtil.colorFromState(i, cols.length);
-	}
 	
 	
 	for (int i = 0; i < simulator.gridHeight; i++) {
