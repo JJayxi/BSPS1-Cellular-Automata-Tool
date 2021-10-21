@@ -17,8 +17,8 @@ public class SimulationDisplayer {
     }
 
     public void draw(Graphics2D g, int width, int height) {
-	float dx = height / simulator.gridHeight;
-	float dy = width / simulator.gridWidth;
+	float dx = (float)height / simulator.gridHeight;
+	float dy = (float)width / simulator.gridWidth;
 	
 	Color[] cols = new Color[simulator.automaton.getNumberOfStates()];
 	for(int i = 0; i < cols.length; i++)
@@ -29,7 +29,7 @@ public class SimulationDisplayer {
 	    for (int j = 0; j < simulator.gridWidth; j++) {
 
 		g.setColor(cols[simulator.grid[i][j]]);
-		g.fillRect((int) (i * dx), (int) (j * dy), (int) dx, (int) dy);
+		g.fillRect((int) (i * dx), (int) (j * dy), (int) dx + 1, (int) dy + 1);
 	    }
 	}
     }

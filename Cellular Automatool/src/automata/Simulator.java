@@ -26,6 +26,10 @@ public class Simulator {
 	
 	this.gridHeight = gridHeight;
 	this.gridWidth = gridWidth;
+	randomizeGrid();
+    }
+    
+    public void randomizeGrid() {
 	grid = new int[gridHeight][gridWidth];
 	for(int i = 0; i < gridHeight; i++)
 	    for(int j = 0; j < gridWidth; j++) {
