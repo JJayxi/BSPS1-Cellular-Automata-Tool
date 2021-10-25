@@ -1,10 +1,14 @@
 package automata.presets;
 
-import automata.Automaton;
+import automata.Automata;
 
-public class RockPaperScissors implements Automaton {
+/**
+ * automata that makes beautiful spirals, and can have an arbitrary number of states.
+ * this cannot be created with the moduls since a random value is used
+ */
+public class RockPaperScissors implements Automata {
     
-    //0 = rock, 1 = paper, 2 = scissors
+    //state n+1 beats n 
     private final int N = 4;
     @Override
     public int getNumberOfStates() {

@@ -1,8 +1,12 @@
 package automata.presets;
 
-import automata.Automaton;
+import automata.Automata;
 
-public class GameOfLife implements Automaton{
+/**
+ *  automata that runs game of life
+ */
+public class GameOfLife implements Automata{
+    
     
     @Override
     public int getNumberOfStates() {

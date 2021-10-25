@@ -1,2 +1,0 @@
-package automata.modular;
-

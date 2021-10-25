@@ -27,4 +27,9 @@ public class ConditionNeighbourStateLessThan implements Condition{
 	return neighbourStateCount[applyState] < number;
     }
     
+//    @Override
+//    public String toFileString() {
+//	return "{\n" + "state " + applyState + " count < " + number + "\n}";
+//    }
+    
 }

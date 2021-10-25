@@ -5,27 +5,64 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import util.MiscUtil;
 
+/**
+ * Class that collects the activity and the distribution of cells
+ */
 public class Stats {
+    
+    /**
+     * Array that contains the activity for each time step the simulation went through
+     */
     private ArrayList<Integer> activity = new ArrayList<>();
+    /**
+     * Array that contains the activity for each time step the simulation went through
+     */
     private ArrayList<int[]> cellCounting = new ArrayList<>();
     
+    
+    
+    //////////The following values are used to display only
+    /**
+     * The dimensions of the simulation
+     */
     private final int gridWidth, gridHeight;
+    /**
+     * the number of states that the simulation has.
+     */
     private final int numberOfStates;
     
+    /**
+     * create a new object to track the activity and cell distribution
+     * @param gridWidth
+     * @param gridHeight
+     * @param numberOfStates 
+     */
     public Stats(int gridWidth, int gridHeight, int numberOfStates) {
 	this.gridWidth = gridWidth;
 	this.gridHeight = gridHeight;
 	this.numberOfStates = numberOfStates;
     }
     
+    /**
+     * add the values collected during one step
+     * @param cellChange
+     * @param cellCount 
+     */
     public void addStepValues(int cellChange, int[] cellCount) {
 	if(cellChange > maxActivity)maxActivity = cellChange;
 	activity.add(cellChange);
 	cellCounting.add(cellCount);
     }
     
-    
+    //value that tracks the maximum activity that happened. Necessary
+    //to know the hight of the activity graph
     private int maxActivity = 0;
+    /**
+     * displays the activity graph
+     * @param g the graphisc2D object of the JPanel
+     * @param width the width in pixels
+     * @param height the height in pixels
+     */
     public void showActivity(Graphics2D g, int width, int height) {
 	g.setColor(Color.white);
 	g.fillRect(0, 0, width, height);
@@ -38,6 +75,13 @@ public class Stats {
 	    
 	}
     }
+    
+    /**
+     * displays the distribution of cell graph
+     * @param g the graphics2D object of the Jpanel
+     * @param width the width in pixels
+     * @param height the height in pixels
+     */
     public void showCellCount(Graphics2D g, int width, int height) {
 	    int[] polygonsX = new int[activity.size() * 2];
 	    int[][] polygonsY = new int[numberOfStates][activity.size() * 2];

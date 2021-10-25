@@ -28,4 +28,9 @@ public class ConditionOr implements Condition {
 	return  conditionLeft.evaluate(neighbourStateCount, cellState) ||
 		conditionRight.evaluate(neighbourStateCount, cellState);
     }
+    
+//    @Override
+//    public String toFileString() {
+//	return "{\n" + conditionLeft + "\nOR\n" + conditionRight + "\n}";
+//    }
 }

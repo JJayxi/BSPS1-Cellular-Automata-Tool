@@ -1,21 +1,63 @@
 package gui;
 
 import automata.Simulator;
+import automata.modular.ModularAutomata;
+import automata.modular.Rule;
+import automata.modular.conditions.ConditionNeighbourStateEqual;
+import automata.modular.conditions.ConditionNeighbourStateLessThan;
+import automata.modular.conditions.ConditionNeighbourStateMoreThan;
 import javax.swing.Timer;
 
+/**
+ * Automatically generated class with the swing ui editor. The swing parts are automatically
+ * created, the rest is done manually. This frame is the simulator
+ */
 public class MainFrame extends javax.swing.JFrame {
     
+    /**
+     * The simulator object which contains the running cellular automata
+     */
     private Simulator simulator;
+    
+    /**
+     * The timer allows to time the delay between each step of the cellular automata.
+     */
     private Timer timer;
+    
     public MainFrame() {
 	initComponents();
 	
+	//Change the name of the window
 	setTitle("Cellular Automatool");
 	
-	simulator = new Simulator(160, 160);
+	/*
+	This is game of life created with the modular automata class.
+	*/
+	ModularAutomata modularGoL = new ModularAutomata(2);
+	modularGoL.addRule(new Rule(0, 1, new ConditionNeighbourStateEqual(1, 3)));
+	modularGoL.addRule(new Rule(1, 0, new ConditionNeighbourStateMoreThan(1, 3)));
+	modularGoL.addRule(new Rule(1, 0, new ConditionNeighbourStateLessThan(1, 2)));
+	
+	
+	//we set the running simulation to a new simulation that is 160 by 160 wide
+	//and runs the previously made game of life
+	simulator = new Simulator(160, 160, modularGoL);
+	
+	//we set the panel that displays simulations to display the current running simulation
 	simulationPanel.setSimulator(simulator);
+	
+	//we set the panel that displays the graphics to display the statistics of the
+	//current running simulation
 	activityPanel.setStats(simulator.getStats());
 	cellCountGraphPanel.setStats(simulator.getStats());
+	
+	/*
+	we created a new timer whose speed depends on the value of the slider.
+	For each tick, the timer:
+	- updates the simulation
+	- draws the simulation
+	- draws the graphs
+	*/
 	timer = new Timer(simulationSpeedSlider.getValue(), (t) -> {
 	    simulator.update();
 	    simulationPanel.repaint();
@@ -159,9 +201,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(simulationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(randomizeGridButton)
-                    .addComponent(pauseButton))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pauseButton)
+                    .addComponent(randomizeGridButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(simulationSpeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
