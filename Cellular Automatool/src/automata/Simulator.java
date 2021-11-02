@@ -2,11 +2,13 @@ package automata;
 
 import automata.presets.*;
 import automata.stats.Stats;
+import java.util.Arrays;
 
 public class Simulator {
     
     
     protected int[][] grid;
+    protected int[][][] gridCount;
     protected int gridWidth, gridHeight;
     public Stats stats;
     
@@ -26,7 +28,13 @@ public class Simulator {
 	
 	this.gridHeight = gridHeight;
 	this.gridWidth = gridWidth;
+	this.gridCount = new int[gridHeight][gridWidth][automaton.getNumberOfStates()];
 	randomizeGrid();
+	
+	
+	//////////
+	newGrid = new int[gridHeight][gridWidth];
+	newGridCount = new int[gridHeight][gridWidth][automaton.getNumberOfStates()];
     }
     
     /**
@@ -35,9 +43,32 @@ public class Simulator {
     public void randomizeGrid() {
 	grid = new int[gridHeight][gridWidth];
 	for(int i = 0; i < gridHeight; i++)
-	    for(int j = 0; j < gridWidth; j++) {
-		grid[i][j] = (int)(Math.random() * automaton.getNumberOfStates());
-	    }
+	    for(int j = 0; j < gridWidth; j++) 
+		grid[i][j] = (int)(Math.random() * automaton.getNumberOfStates());  
+    }
+    
+    public void setCellValue(int col, int row, int state) {
+	setCellValue(col, row, state, grid, gridCount);
+    }
+    
+    private void setCellValue(int col, int row, int state, int[][] grid, int[][][] gridCount) {
+	grid[row][col] = state;
+	
+	boolean cm = col > 0, cg = col < gridWidth-1;
+	boolean rm = row > 0, rg = row < gridHeight-1;
+	if(cm) {
+		  gridCount[row	   ][col - 1][state]++;
+	    if(rm)gridCount[row - 1][col - 1][state]++;
+	    if(rg)gridCount[row + 1][col - 1][state]++;
+	}
+	if(cg) {
+		  gridCount[row	   ][col + 1][state]++;
+	    if(rm)gridCount[row - 1][col + 1][state]++;
+	    if(rg)gridCount[row + 1][col + 1][state]++;
+	}
+	
+	if(rm)gridCount[row - 1][col][state]++;
+	if(rg)gridCount[row + 1][col][state]++;
     }
     
     /**
@@ -46,43 +77,35 @@ public class Simulator {
      * The number of cells in each state is counted, and so is the number of cells
      * that change state. Those value are then added in the Simulator.stats to be tracked. 
      */
+    private int[][][] newGridCount;
+    private int[][] newGrid;
     public void update() {
 	int[] cellCount = new int[automaton.getNumberOfStates()];
+	
+	for(int[][] row : newGridCount)
+	    for(int[] cell : row)
+		Arrays.fill(cell, 0);
+	
 	int activity = 0;
-	int[][] newGrid = new int[gridHeight][gridWidth];
+	
 	for(int i = 0; i < gridHeight; i++)
 	    for(int j = 0; j < gridWidth; j++) {
 		cellCount[grid[j][i]]++;
-		newGrid[i][j] = nextState(j, i);
+		setCellValue(i, j, 
+			    automaton.evaluate(gridCount[j][i], grid[j][i]),
+			    newGrid, newGridCount);
 		if(grid[i][j] != newGrid[i][j])activity++;
 		
 	    }
+	int[][] temp2 = grid;
 	grid = newGrid;
-	stats.addStepValues(activity, cellCount);
-    }
-    
-    /**
-     * Calculates the next state of a specific cell in the grid
-     * @param x column if that cell
-     * @param y row of that cell
-     * @return the state that this cell will have in the next time step by
-     * applying the local rule
-     */
-    private int nextState(int x, int y) {
-	int[] count = new int[automaton.getNumberOfStates()];
-	if(x - 1 >= 0){		    count[grid[y    ][x - 1]]++;
-	    if(y - 1 >= 0)	    count[grid[y - 1][x - 1]]++;
-	    if(y + 1 < gridHeight)  count[grid[y + 1][x - 1]]++;
-	}
-	if(x + 1 < gridWidth){      count[grid[y    ][x + 1]]++;
-	    if(y - 1 >= 0)	    count[grid[y - 1][x + 1]]++;
-	    if(y + 1 < gridHeight)  count[grid[y + 1][x + 1]]++;
-	}
-
-	if(y - 1 >= 0)		    count[grid[y - 1][x    ]]++;
-	if(y + 1 < gridHeight)	    count[grid[y + 1][x    ]]++;
+	newGrid = temp2;
 	
-	return automaton.evaluate(count, grid[y][x]);
+	int[][][] temp3 = gridCount;
+	gridCount = newGridCount;
+	newGridCount = temp3;
+	
+	stats.addStepValues(activity, cellCount);
     }
     
     /**
