@@ -28,9 +28,4 @@ public class ConditionAnd implements Condition {
 	return  conditionLeft.evaluate(neighbourStateCount, cellState) &&
 		conditionRight.evaluate(neighbourStateCount, cellState);
     }
-    
-//    @Override
-//    public String toFileString() {
-//	return "{\n" + conditionLeft + "\nAND\n" + conditionRight + "\n}";
-//    }
 }

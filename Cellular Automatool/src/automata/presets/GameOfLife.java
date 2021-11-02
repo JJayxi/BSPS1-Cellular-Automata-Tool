@@ -7,7 +7,6 @@ import automata.Automata;
  */
 public class GameOfLife implements Automata{
     
-    
     @Override
     public int getNumberOfStates() {
 	return 2;

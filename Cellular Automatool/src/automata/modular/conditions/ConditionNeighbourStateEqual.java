@@ -20,9 +20,4 @@ public class ConditionNeighbourStateEqual implements Condition{
     public boolean evaluate(int[] neighbourStateCount, int cellState) {
 	return neighbourStateCount[applyState] == number;
     }
-    
-//    @Override
-//    public String toFileString() {
-//	return "{\n" + "state " + applyState + " count = " + number + "\n}";
-//    }
 }
