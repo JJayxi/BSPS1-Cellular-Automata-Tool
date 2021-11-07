@@ -1,6 +1,5 @@
 package automata;
 
-import automata.presets.*;
 import automata.stats.Stats;
 import java.util.Arrays;
 
@@ -11,28 +10,35 @@ public class Simulator {
     protected int gridWidth, gridHeight;
     public Stats stats;
 
-    //Automaton automaton = new GameOfLife();
-    Automata automaton = new RockPaperScissors();
+    Automata automata;
 
     /**
      * @param gridWidth number of columns in the grid of the running simulation
      * @param gridHeight number of rows in the grid of the running simulation
-     * @param automaton automaton that will run the simulation
+     * @param automaton automata that will run the simulation
      */
-    public Simulator(int gridWidth, int gridHeight, Automata automaton) {
+    public Simulator(int gridWidth, int gridHeight, Automata automata) {
 
-	this.automaton = automaton;
+	this.automata = automata;
 
-	stats = new Stats(gridWidth, gridHeight, automaton.getNumberOfStates());
+	stats = new Stats(gridWidth, gridHeight, automata.getNumberOfStates());
 
 	this.gridHeight = gridHeight;
 	this.gridWidth = gridWidth;
-	this.gridCount = new int[gridHeight][gridWidth][automaton.getNumberOfStates()];
 	randomizeGrid();
 
 	//////////
 	newGrid = new int[gridHeight][gridWidth];
-	newGridCount = new int[gridHeight][gridWidth][automaton.getNumberOfStates()];
+	newGridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
+    }
+    
+    public void setAutomata(Automata automata) {
+	this.automata = automata;
+	randomizeGrid();
+    }
+    
+    public Automata getAutomata() {
+	return automata;
     }
 
     /**
@@ -40,28 +46,73 @@ public class Simulator {
      */
     public void randomizeGrid() {
 	grid = new int[gridHeight][gridWidth];
+	gridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
 	for (int i = 0; i < gridHeight; i++)
 	    for (int j = 0; j < gridWidth; j++)
-		grid[i][j] = (int) (Math.random() * automaton.getNumberOfStates());
+		setCellValue(j, i, (int)(Math.random() * automata.getNumberOfStates()));
     }
-
+    
+    /**
+     * Set all the cells in the grid to a specific state
+     * @param state 
+     */
+    public void clearToState(int state) {
+	grid = new int[gridHeight][gridWidth];
+	newGridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
+	for (int i = 0; i < gridHeight; i++)
+	    for (int j = 0; j < gridWidth; j++)
+		setCellValue(j, i, state);
+    }
+    
+    /**
+     * Set's a cell to a state and add it's state to the neighbours neighbours-count
+     * @param col
+     * @param row
+     * @param state 
+     */
     public void setCellValue(int col, int row, int state) {
 	grid[row][col] = state;
-	addNeighbourCount(col, row, state, grid, gridCount, 1);
+	addNeighbourCount(col, row, state, gridCount, 1);
     }
     
+    /**
+     * Set's a cell to a state and add it's state to the neighbours neighbours-count.
+     * The grid is where the cell is set, and the gridCount is where the neighbours are counted.
+     * @param col
+     * @param row
+     * @param state
+     * @param grid
+     * @param gridCount 
+     */
     public void setCellValue(int col, int row, int state, int[][] grid, int[][][] gridCount) {
 	grid[row][col] = state;
-	addNeighbourCount(col, row, state, grid, gridCount, 1);
+	addNeighbourCount(col, row, state, gridCount, 1);
     }
     
+    /**
+     * Set's a cell to a state and add it's state to the neighbours neighbours-count.
+     * The grid is where the cell is set, and the gridCount is where the neighbours are counted.
+     * @param col
+     * @param row
+     * @param state
+     * @param grid
+     * @param gridCount 
+     */
     public void replaceCellValue(int col, int row, int state, int[][] grid, int[][][] gridCount) {
-	addNeighbourCount(col, row, grid[row][col], grid, gridCount, -1);
+	addNeighbourCount(col, row, grid[row][col], gridCount, -1);
 	grid[row][col] = state;
-	addNeighbourCount(col, row, state, grid, gridCount, 1);
+	addNeighbourCount(col, row, state, gridCount, 1);
     }
-
-    private void addNeighbourCount(int col, int row, int state, int[][] grid, int[][][] gridCount, int val) {
+    
+    /**
+     * To all the neighbours of a cell, add val to the neighbour counter of a specific state. 
+     * @param col
+     * @param row
+     * @param state
+     * @param gridCount
+     * @param val 
+     */
+    private void addNeighbourCount(int col, int row, int state, int[][][] gridCount, int val) {
 	
 	boolean cm = col > 0, cg = col < gridWidth - 1;
 	boolean rm = row > 0, rg = row < gridHeight - 1;
@@ -92,7 +143,7 @@ public class Simulator {
      * be tracked.
      */
     public void update() {
-	int[] cellCount = new int[automaton.getNumberOfStates()];
+	int[] cellCount = new int[automata.getNumberOfStates()];
 
 	for (int[][] row : newGridCount) {
 	    for (int[] cell : row) {
@@ -100,10 +151,19 @@ public class Simulator {
 	    }
 	}
 
-	int[] activity = {0};
-	//long start = System.nanoTime();
-	updateRange(0, gridWidth , 0, gridHeight , cellCount, activity);
-	//System.out.println("Took:\t" + (System.nanoTime() - start) / 1000000);
+	int activity = 0;
+	for (int i = 0; i < gridHeight; i++) {
+	    for (int j = 0; j < gridWidth; j++) {
+		cellCount[grid[j][i]]++;
+		setCellValue(i, j,
+			    automata.evaluate(gridCount[j][i], grid[j][i]),
+			    newGrid, newGridCount);
+		if (grid[i][j] != newGrid[i][j])
+		    activity++;
+		
+
+	    }
+	}
 	int[][] temp2 = grid;
 	grid = newGrid;
 	newGrid = temp2;
@@ -112,22 +172,7 @@ public class Simulator {
 	gridCount = newGridCount;
 	newGridCount = temp3;
 
-	stats.addStepValues(activity[0], cellCount);
-    }
-
-    public void updateRange(int colStart, int colEnd, int rowStart, int rowEnd, int[] cellCount, int[] activity) {
-	for (int i = rowStart; i < rowEnd; i++) {
-	    for (int j = colStart; j < colEnd; j++) {
-		cellCount[grid[j][i]]++;
-		setCellValue(i, j,
-			automaton.evaluate(gridCount[j][i], grid[j][i]),
-			newGrid, newGridCount);
-		if (grid[i][j] != newGrid[i][j]) {
-		    activity[0]++;
-		}
-
-	    }
-	}
+	stats.addStepValues(activity, cellCount);
     }
 
     /**
@@ -140,34 +185,3 @@ public class Simulator {
     }
 
 }
-
-/*
-public void update() {
-	int[] cellCount = new int[automaton.getNumberOfStates()];
-	
-	for(int[][] row : newGridCount)
-	    for(int[] cell : row)
-		Arrays.fill(cell, 0);
-	
-	int activity = 0;
-	
-	for(int i = 0; i < gridHeight; i++)
-	    for(int j = 0; j < gridWidth; j++) {
-		cellCount[grid[j][i]]++;
-		setCellValue(i, j, 
-			    automaton.evaluate(gridCount[j][i], grid[j][i]),
-			    newGrid, newGridCount);
-		if(grid[i][j] != newGrid[i][j])activity++;
-		
-	    }
-	int[][] temp2 = grid;
-	grid = newGrid;
-	newGrid = temp2;
-	
-	int[][][] temp3 = gridCount;
-	gridCount = newGridCount;
-	newGridCount = temp3;
-	
-	stats.addStepValues(activity, cellCount);
-    }
-*/

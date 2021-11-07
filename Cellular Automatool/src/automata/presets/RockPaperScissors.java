@@ -9,7 +9,7 @@ import automata.Automata;
 public class RockPaperScissors implements Automata {
     
     //state n+1 beats n 
-    private final int N = 4;
+    private final int N = 3;
     @Override
     public int getNumberOfStates() {
 	return N;
@@ -19,7 +19,7 @@ public class RockPaperScissors implements Automata {
     @Override
     public int evaluate(int[] neighbourStateCount, int cellState) {
 	
-	if(neighbourStateCount[(cellState + 1) % N] > threshold + Math.round(Math.random() * 4 - 3)) 
+	if(neighbourStateCount[(cellState + 1) % N] > threshold) //+ Math.round(Math.random() * 4 - 3) 
 	    return (cellState + 1) % N;
 	return cellState;
     }

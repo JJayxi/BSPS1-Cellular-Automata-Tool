@@ -38,7 +38,7 @@ public class SimulationDisplayer {
 	float dx = (float)height / simulator.gridHeight;
 	float dy = (float)width / simulator.gridWidth;
 	
-	Color[] cols = new Color[simulator.automaton.getNumberOfStates()];
+	Color[] cols = new Color[simulator.automata.getNumberOfStates()];
 	for(int i = 0; i < cols.length; i++)
 	    cols[i] = MiscUtil.colorFromState(i, cols.length);
 	

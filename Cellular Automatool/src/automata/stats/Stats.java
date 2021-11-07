@@ -54,6 +54,13 @@ public class Stats {
 	cellCounting.add(cellCount);
     }
     
+    public void clear() {
+	activity.clear();
+	cellCounting.clear();
+	maxActivity = 0;
+    }
+    
+    
     //value that tracks the maximum activity that happened. Necessary
     //to know the hight of the activity graph
     private int maxActivity = 0;

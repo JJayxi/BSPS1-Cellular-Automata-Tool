@@ -9,9 +9,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  * Automaton that can be edited by adding rules and changing the number of
@@ -101,13 +98,41 @@ public class ModularAutomata implements Automata {
     public int getNumberOfStates() {
 	return numberOfStates;
     }
-
+    
+    public String[] getStateStringArray() {
+	String[] strings = new String[numberOfStates];
+	for(int i = 0; i < numberOfStates; i++) {
+	    strings[i] = "State " + i;
+	}
+	
+	return strings;
+    }
+    
+    private static void configureXStream(XStream xstream) {
+	
+	XStream.setupDefaultSecurity(xstream);
+	xstream.allowTypesByWildcard(new String[] { 
+        "automata.modular.*",
+        "automata.modular.conditions.*",
+        });
+	
+	xstream.alias("modularAutomata", automata.modular.ModularAutomata.class);
+	xstream.alias("Rule", automata.modular.Rule.class);
+	xstream.alias("equal", automata.modular.conditions.ConditionNeighbourStateEqual.class);
+	xstream.alias("moreThan", automata.modular.conditions.ConditionNeighbourStateMoreThan.class);
+	xstream.alias("lessThan", automata.modular.conditions.ConditionNeighbourStateLessThan.class);
+	xstream.alias("and", automata.modular.conditions.ConditionAnd.class);
+	xstream.alias("or", automata.modular.conditions.ConditionOr.class);
+    }
+    
     /**
      * @param filename The name of the file that this modularAutomata will be
      * saved to
      */
     public static void saveToXMLFile(ModularAutomata automata, String filename) {
 	XStream xstream = new XStream(new DomDriver("UTF-8"));
+	configureXStream(xstream);
+	
 	String xml = xstream.toXML(automata);
 
 	try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
@@ -124,6 +149,8 @@ public class ModularAutomata implements Automata {
      */
     public static ModularAutomata fromXMLFile(String filename) {
 	XStream xstream = new XStream(new DomDriver("UTF-8"));
+	configureXStream(xstream);
+	
 	try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
 	    return (ModularAutomata) xstream.fromXML(in);
 	} catch (com.thoughtworks.xstream.mapper.CannotResolveClassException e) {
@@ -133,5 +160,4 @@ public class ModularAutomata implements Automata {
 	}
 	return null;
     }
-
 }
