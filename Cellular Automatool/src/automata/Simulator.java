@@ -7,7 +7,7 @@ public class Simulator {
 
     protected int[][] grid;
     protected int[][][] gridCount;
-    protected int gridWidth, gridHeight;
+    public final int gridWidth, gridHeight;
     public Stats stats;
 
     Automata automata;
@@ -58,7 +58,7 @@ public class Simulator {
      */
     public void clearToState(int state) {
 	grid = new int[gridHeight][gridWidth];
-	newGridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
+	gridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
 	for (int i = 0; i < gridHeight; i++)
 	    for (int j = 0; j < gridWidth; j++)
 		setCellValue(j, i, state);
@@ -98,6 +98,10 @@ public class Simulator {
      * @param grid
      * @param gridCount 
      */
+    public void replaceCellValue(int col, int row, int state) {
+	replaceCellValue(col, row, state, grid, gridCount);
+    }
+    
     public void replaceCellValue(int col, int row, int state, int[][] grid, int[][][] gridCount) {
 	addNeighbourCount(col, row, grid[row][col], gridCount, -1);
 	grid[row][col] = state;

@@ -5,6 +5,7 @@ import automata.Simulator;
 import automata.modular.*;
 import automata.modular.conditions.*;
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.Timer;
@@ -61,6 +62,7 @@ public class MainFrame extends javax.swing.JFrame {
 	simulationPanel.repaint();
 	activityPanel.repaint();
 	cellCountGraphPanel.repaint();
+	stepsCountLabel.setText(String.valueOf(simulator.getStats().getStepsCount()));
     }
     
     private void resetSimulation(Automata automata, int width, int height) {
@@ -121,6 +123,8 @@ public class MainFrame extends javax.swing.JFrame {
         cellCountGraphPanel = new gui.stats.CellCountGraphPanel();
         jLabel1 = new javax.swing.JLabel();
         clearStatsButton = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        stepsCountLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -143,7 +147,12 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        simulationPanel.setPreferredSize(new java.awt.Dimension(0, 612));
+        simulationPanel.setPreferredSize(new java.awt.Dimension(600, 600));
+        simulationPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                simulationPanelMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout simulationPanelLayout = new javax.swing.GroupLayout(simulationPanel);
         simulationPanel.setLayout(simulationPanelLayout);
@@ -153,7 +162,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         simulationPanelLayout.setVerticalGroup(
             simulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 612, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
 
         skipStepsButton.setText("Skip steps");
@@ -207,7 +216,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(simulationSpeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(skipStepsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         randomizeGridButton.setText("Randomize");
@@ -303,6 +312,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Steps Count:");
+
+        stepsCountLabel.setText(" ");
+
         javax.swing.GroupLayout statsGroupPanelLayout = new javax.swing.GroupLayout(statsGroupPanel);
         statsGroupPanel.setLayout(statsGroupPanelLayout);
         statsGroupPanelLayout.setHorizontalGroup(
@@ -315,7 +328,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(activityPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addComponent(jLabel2))
-                    .addComponent(clearStatsButton))
+                    .addGroup(statsGroupPanelLayout.createSequentialGroup()
+                        .addComponent(clearStatsButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(stepsCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         statsGroupPanelLayout.setVerticalGroup(
@@ -330,8 +348,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(activityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(clearStatsButton)
-                .addContainerGap(268, Short.MAX_VALUE))
+                .addGroup(statsGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clearStatsButton)
+                    .addComponent(jLabel5)
+                    .addComponent(stepsCountLabel))
+                .addContainerGap(256, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -404,6 +425,13 @@ public class MainFrame extends javax.swing.JFrame {
         simulator.getStats().clear();
 	updateView();
     }//GEN-LAST:event_clearStatsButtonActionPerformed
+
+    private void simulationPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_simulationPanelMouseClicked
+        if(evt.getButton() == MouseEvent.BUTTON1){
+	    simulationPanel.setCell(evt, stateList.getSelectedIndex());
+	    repaint();
+	}
+    }//GEN-LAST:event_simulationPanelMouseClicked
     
     // <editor-fold defaultstate="collapsed" desc="StateListRenderer">
     //Thank this legend: https://coderanch.com/t/335943/java/Changing-background-color-JList
@@ -457,6 +485,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton loadAutomataButton;
@@ -470,5 +499,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField skipStepsTextField;
     private javax.swing.JList stateList;
     private javax.swing.JPanel statsGroupPanel;
+    private javax.swing.JLabel stepsCountLabel;
     // End of variables declaration//GEN-END:variables
 }

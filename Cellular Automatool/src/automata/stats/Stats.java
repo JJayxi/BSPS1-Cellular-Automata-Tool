@@ -61,6 +61,10 @@ public class Stats {
     }
     
     
+    public int getStepsCount() {
+	return activity.size();
+    }
+    
     //value that tracks the maximum activity that happened. Necessary
     //to know the hight of the activity graph
     private int maxActivity = 0;
