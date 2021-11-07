@@ -3,12 +3,13 @@ package gui;
 import automata.Automata;
 import automata.Simulator;
 import automata.modular.*;
-import automata.modular.conditions.*;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import util.MiscUtil;
 
 /**
@@ -37,11 +38,12 @@ public class MainFrame extends javax.swing.JFrame {
 	/*
 	This is game of life created with the modular automata class.
 	*/
-	ModularAutomata modularGoL = new ModularAutomata(2);
-	modularGoL.addRule(new Rule(0, 1, new ConditionNeighbourStateEqual(1, 3)));
-	modularGoL.addRule(new Rule(1, 0, new ConditionNeighbourStateMoreThan(1, 3)));
-	modularGoL.addRule(new Rule(1, 0, new ConditionNeighbourStateLessThan(1, 2)));
-	ModularAutomata.saveToXMLFile(modularGoL, "gameOfLife.xml");
+//	ModularAutomata wireframe = new ModularAutomata(4);
+//	wireframe.addRule(new Rule(1, 2, new ConditionTrue()));
+//	wireframe.addRule(new Rule(2, 3, new ConditionTrue()));
+//	wireframe.addRule(new Rule(3, 1, new ConditionNeighbourStateEqual(1, 1)));
+//	wireframe.addRule(new Rule(3, 1, new ConditionNeighbourStateEqual(1, 2)));
+//	ModularAutomata.saveToXMLFile(wireframe, "wireframe.xml");
 	
 	loadFromFile("gameOfLife.xml");
 
@@ -418,7 +420,14 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_clearGridButtonActionPerformed
 
     private void loadAutomataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAutomataButtonActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+	fileChooser.setAcceptAllFileFilterUsed(false);
+	fileChooser.setFileFilter(new FileNameExtensionFilter("automaton .xml file", "xml"));
+	if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+	    loadFromFile(fileChooser.getSelectedFile().getAbsolutePath());
+	    updateView();
+	}
+
     }//GEN-LAST:event_loadAutomataButtonActionPerformed
 
     private void clearStatsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearStatsButtonActionPerformed

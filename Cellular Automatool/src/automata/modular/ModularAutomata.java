@@ -123,6 +123,7 @@ public class ModularAutomata implements Automata {
 	xstream.alias("lessThan", automata.modular.conditions.ConditionNeighbourStateLessThan.class);
 	xstream.alias("and", automata.modular.conditions.ConditionAnd.class);
 	xstream.alias("or", automata.modular.conditions.ConditionOr.class);
+	xstream.alias("true", automata.modular.conditions.ConditionTrue.class);
     }
     
     /**
