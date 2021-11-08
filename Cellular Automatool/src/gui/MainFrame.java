@@ -3,6 +3,8 @@ package gui;
 import automata.Automata;
 import automata.Simulator;
 import automata.modular.*;
+import automata.modular.conditions.ConditionNeighbourStateEqual;
+import automata.modular.conditions.ConditionTrue;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import javax.swing.DefaultListCellRenderer;
@@ -30,7 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
     private Timer timer;
 
     public MainFrame() {
-	initComponents();	
+	initComponents();
 
 	//Change the name of the window
 	setTitle("Cellular Automatool");
@@ -69,9 +71,12 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void resetSimulation(Automata automata, int width, int height) {
 	//we set the running simulation to a new simulation that is width by height wide
-	//and runs the previously made game of life
-	simulator = new Simulator(width, height, automata);
+	resetSimulation(new Simulator(width, height, automata));	
 	
+    }
+    
+    private void resetSimulation(Simulator simulator) {
+	this.simulator = simulator;
 	//we set the panel that displays simulations to display the current running simulation
 	simulationPanel.setSimulator(simulator);
 
@@ -104,6 +109,7 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
         simulationGroupPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         simulationSpeedSlider = new javax.swing.JSlider();
@@ -112,6 +118,8 @@ public class MainFrame extends javax.swing.JFrame {
         skipStepsButton = new javax.swing.JButton();
         skipStepsTextField = new javax.swing.JTextField();
         loadAutomataButton = new javax.swing.JButton();
+        saveGridButton = new javax.swing.JButton();
+        loadGridButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         randomizeGridButton = new javax.swing.JButton();
         clearGridButton = new javax.swing.JButton();
@@ -127,6 +135,8 @@ public class MainFrame extends javax.swing.JFrame {
         clearStatsButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         stepsCountLabel = new javax.swing.JLabel();
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -181,12 +191,26 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        saveGridButton.setText("Save Grid");
+        saveGridButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveGridButtonActionPerformed(evt);
+            }
+        });
+
+        loadGridButton.setText("Load Grid");
+        loadGridButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadGridButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout simulationGroupPanelLayout = new javax.swing.GroupLayout(simulationGroupPanel);
         simulationGroupPanel.setLayout(simulationGroupPanelLayout);
         simulationGroupPanelLayout.setHorizontalGroup(
             simulationGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, simulationGroupPanelLayout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(simulationGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, simulationGroupPanelLayout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -201,8 +225,12 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(simulationGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(skipStepsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(skipStepsTextField))
-                .addGap(241, 241, 241))
-            .addComponent(simulationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
+                .addGap(156, 156, 156)
+                .addGroup(simulationGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(loadGridButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saveGridButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addComponent(simulationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
         );
         simulationGroupPanelLayout.setVerticalGroup(
             simulationGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,12 +240,15 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(simulationGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pauseButton)
                     .addComponent(skipStepsButton)
-                    .addComponent(loadAutomataButton))
+                    .addComponent(loadAutomataButton)
+                    .addComponent(saveGridButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(simulationGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(simulationSpeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(skipStepsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(simulationGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(skipStepsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(loadGridButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -365,15 +396,18 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(simulationGroupPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(statsGroupPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(simulationGroupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(statsGroupPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(simulationGroupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -441,6 +475,31 @@ public class MainFrame extends javax.swing.JFrame {
 	    repaint();
 	}
     }//GEN-LAST:event_simulationPanelMouseClicked
+
+    private void saveGridButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGridButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+	fileChooser.setAcceptAllFileFilterUsed(false);
+	fileChooser.setFileFilter(new FileNameExtensionFilter("grid text file", "txt"));
+	if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+	    Simulator.saveGridToFile(
+		    fileChooser.getSelectedFile().getAbsolutePath(), 
+		    simulator);
+	}
+    }//GEN-LAST:event_saveGridButtonActionPerformed
+
+    private void loadGridButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGridButtonActionPerformed
+        if (timer.isRunning()) pauseButton.doClick();
+	JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+	fileChooser.setAcceptAllFileFilterUsed(false);
+	fileChooser.setFileFilter(new FileNameExtensionFilter("grid text file", "txt"));
+	if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+	    resetSimulation(Simulator.loadGridFromFile(
+		    fileChooser.getSelectedFile().getAbsolutePath(),
+		    simulator.getAutomata()
+	    ));
+	    updateView();
+	}
+    }//GEN-LAST:event_loadGridButtonActionPerformed
     
     // <editor-fold defaultstate="collapsed" desc="StateListRenderer">
     //Thank this legend: https://coderanch.com/t/335943/java/Changing-background-color-JList
@@ -495,11 +554,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton loadAutomataButton;
+    private javax.swing.JButton loadGridButton;
     private javax.swing.JButton pauseButton;
     private javax.swing.JButton randomizeGridButton;
+    private javax.swing.JButton saveGridButton;
     private javax.swing.JPanel simulationGroupPanel;
     private gui.SimulationPanel simulationPanel;
     private javax.swing.JTextField simulationSizeTextField;

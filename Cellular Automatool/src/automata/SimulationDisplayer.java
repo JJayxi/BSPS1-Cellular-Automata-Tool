@@ -35,6 +35,7 @@ public class SimulationDisplayer {
     public void changeZoom(int n, Point2D mouse) {
 	Point2D beforeZoom = screenToSim(mouse);
 	scale *= 1 + n * 0.05;
+	scale = Math.max(200 / (float)simulator.gridWidth, Math.min(100, scale));
 	Point2D afterZoom = screenToSim(mouse);
 	
 	offset.setLocation(

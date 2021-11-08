@@ -1,6 +1,11 @@
 package automata;
 
 import automata.stats.Stats;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 public class Simulator {
@@ -187,5 +192,52 @@ public class Simulator {
     public Stats getStats() {
 	return stats;
     }
-
+    
+    public static void saveGridToFile(String filename, Simulator simulator) {
+	try(PrintWriter out = new PrintWriter(new FileWriter(filename))) {
+	    out.println(simulator.automata.getNumberOfStates());
+	    out.println(simulator.gridWidth + " " + simulator.gridHeight);
+	    for(int i = 0; i < simulator.gridHeight; i++) {
+		for(int j = 0; j < simulator.gridWidth; j++)
+		    out.print(simulator.grid[i][j] + ",");
+		out.println();
+	    }
+	    
+	} catch (IOException e) {
+	    System.out.println("Unable to save the grid in the file");
+	}
+	
+    }
+    
+    public static Simulator loadGridFromFile(String filename, Automata automata) {
+	Simulator simulator = null;
+	try(BufferedReader in = new BufferedReader(new FileReader(filename))) {
+	    //line 1
+	    String line = in.readLine();
+	    if(Integer.valueOf(line) != automata.getNumberOfStates()) return null;
+	    line = in.readLine();
+	    String[] splitted = line.split(" ");
+	    simulator = new Simulator(
+		    Integer.valueOf(splitted[0]), 
+		    Integer.valueOf(splitted[1]), 
+		    automata);
+	    
+	    int i = 0;
+	    simulator.grid = new int[simulator.gridHeight][simulator.gridHeight];
+	    simulator.gridCount = new int[simulator.gridHeight]
+		    [simulator.gridWidth]
+		    [automata.getNumberOfStates()];
+	    while((line = in.readLine()) != null) {
+		splitted = line.split(",");
+		for (int j = 0; j < splitted.length; j++)
+		    simulator.setCellValue(j, i, Integer.valueOf(splitted[j]));
+		i++;
+	    }
+	    
+	} catch (IOException e) {
+	    System.out.println("Unable to load from the file");
+	}
+	
+	return simulator;
+    } 
 }
