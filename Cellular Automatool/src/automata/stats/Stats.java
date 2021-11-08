@@ -2,6 +2,9 @@ package automata.stats;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import util.MiscUtil;
 
@@ -63,6 +66,26 @@ public class Stats {
     
     public int getStepsCount() {
 	return activity.size();
+    }
+    
+    public static void saveToCSVFile(String filename, Stats stats){
+	try(PrintWriter out = new PrintWriter(new FileWriter(filename))){
+	    out.println("NUMBER_OF_CELLS");
+	    out.println(stats.gridHeight * stats.gridWidth);
+	    out.println("NUMBER_OF_STATES");
+	    out.println(stats.numberOfStates);
+	    out.println("ACTIVITY, STATESCOUNT");
+	    for (int i = 0; i < stats.activity.size(); i++) {
+		out.print(stats.activity.get(i));
+		for (int j = 0; j < stats.numberOfStates; j++) {
+		    out.print("," + stats.cellCounting.get(i)[j]);
+		}
+		out.println();
+	    }	    
+	    
+	} catch(IOException e) {
+	    System.err.println("Unable to save the stats");
+	}
     }
     
     //value that tracks the maximum activity that happened. Necessary

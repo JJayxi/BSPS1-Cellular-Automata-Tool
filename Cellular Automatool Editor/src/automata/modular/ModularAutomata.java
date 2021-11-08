@@ -1,7 +1,6 @@
 package automata.modular;
 
 import java.util.ArrayList;
-import automata.Automata;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.io.BufferedReader;
@@ -127,11 +126,10 @@ public class ModularAutomata implements Automata {
     }
     
     /**
-     * @param automata The automata that will be saved
      * @param filename The name of the file that this modularAutomata will be
      * saved to
      */
-    public static void saveToXMLFile(ModularAutomata automata, String filename) throws Exception {
+    public static void saveToXMLFile(ModularAutomata automata, String filename) {
 	XStream xstream = new XStream(new DomDriver("UTF-8"));
 	configureXStream(xstream);
 	
@@ -140,6 +138,8 @@ public class ModularAutomata implements Automata {
 	try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
 	    out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
 	    out.println(xml);
+	} catch (IOException ex) {
+	    System.err.println("Unable to save the file");
 	}
     }
     
@@ -147,12 +147,17 @@ public class ModularAutomata implements Automata {
      * @param filename name of the XML file that contains the modular automata
      * @return returns a instance of Modular Automata corresponding to the XML file
      */
-    public static ModularAutomata fromXMLFile(String filename) throws Exception {
+    public static ModularAutomata fromXMLFile(String filename) {
 	XStream xstream = new XStream(new DomDriver("UTF-8"));
 	configureXStream(xstream);
 	
 	try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
 	    return (ModularAutomata) xstream.fromXML(in);
+	} catch (com.thoughtworks.xstream.mapper.CannotResolveClassException e) {
+	    System.err.println("Cannot create class from this XML file");
+	} catch (IOException ex) {
+	    System.err.println("Unable to load the file");
 	}
+	return null;
     }
 }

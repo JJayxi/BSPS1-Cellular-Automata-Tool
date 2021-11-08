@@ -3,13 +3,13 @@ package gui;
 import automata.Automata;
 import automata.Simulator;
 import automata.modular.*;
-import automata.modular.conditions.ConditionNeighbourStateEqual;
-import automata.modular.conditions.ConditionTrue;
+import automata.stats.Stats;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import util.MiscUtil;
@@ -47,7 +47,7 @@ public class MainFrame extends javax.swing.JFrame {
 //	wireframe.addRule(new Rule(3, 1, new ConditionNeighbourStateEqual(1, 2)));
 //	ModularAutomata.saveToXMLFile(wireframe, "wireframe.xml");
 	
-	loadFromFile("gameOfLife.xml");
+	loadFromFile("Automaton/gameOfLife.xml");
 
 	/*
 	we created a new timer whose speed depends on the value of the slider.
@@ -93,6 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void loadFromFile(String filename) {
+	try {
 	ModularAutomata automata = ModularAutomata.fromXMLFile(filename);
 	stateList.setListData(automata.getStateStringArray());
 	stateList.setSelectedIndex(0);
@@ -102,6 +103,11 @@ public class MainFrame extends javax.swing.JFrame {
 	resetSimulation(automata, 
 			Integer.valueOf(simulationSizeTextField.getText()),
 			Integer.valueOf(simulationSizeTextField.getText()));
+	} catch (Exception e) {
+	    JOptionPane.showMessageDialog(this,
+			"Unable to load the automata: " + e,
+			"Error", JOptionPane.ERROR_MESSAGE);
+	}
     }
     
 
@@ -135,6 +141,7 @@ public class MainFrame extends javax.swing.JFrame {
         clearStatsButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         stepsCountLabel = new javax.swing.JLabel();
+        saveStatsButton = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -347,7 +354,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel5.setText("Steps Count:");
 
-        stepsCountLabel.setText(" ");
+        stepsCountLabel.setText("0");
+
+        saveStatsButton.setText("Save Stats");
+        saveStatsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveStatsButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout statsGroupPanelLayout = new javax.swing.GroupLayout(statsGroupPanel);
         statsGroupPanel.setLayout(statsGroupPanelLayout);
@@ -356,17 +370,21 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(statsGroupPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(statsGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(statsGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(cellCountGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(activityPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel2))
+                    .addGroup(statsGroupPanelLayout.createSequentialGroup()
+                        .addGroup(statsGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cellCountGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(activityPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(statsGroupPanelLayout.createSequentialGroup()
                         .addComponent(clearStatsButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stepsCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(stepsCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(saveStatsButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         statsGroupPanelLayout.setVerticalGroup(
@@ -384,7 +402,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(statsGroupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clearStatsButton)
                     .addComponent(jLabel5)
-                    .addComponent(stepsCountLabel))
+                    .addComponent(stepsCountLabel)
+                    .addComponent(saveStatsButton))
                 .addContainerGap(256, Short.MAX_VALUE))
         );
 
@@ -481,9 +500,15 @@ public class MainFrame extends javax.swing.JFrame {
 	fileChooser.setAcceptAllFileFilterUsed(false);
 	fileChooser.setFileFilter(new FileNameExtensionFilter("grid text file", "txt"));
 	if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-	    Simulator.saveGridToFile(
+	    try {
+		Simulator.saveGridToFile(
 		    fileChooser.getSelectedFile().getAbsolutePath(), 
 		    simulator);
+	    } catch (Exception e) {
+		JOptionPane.showMessageDialog(this,
+			"Unable to save the grid: " + e.getMessage(),
+			"Error", JOptionPane.ERROR_MESSAGE);
+    }
 	}
     }//GEN-LAST:event_saveGridButtonActionPerformed
 
@@ -493,13 +518,30 @@ public class MainFrame extends javax.swing.JFrame {
 	fileChooser.setAcceptAllFileFilterUsed(false);
 	fileChooser.setFileFilter(new FileNameExtensionFilter("grid text file", "txt"));
 	if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-	    resetSimulation(Simulator.loadGridFromFile(
-		    fileChooser.getSelectedFile().getAbsolutePath(),
-		    simulator.getAutomata()
-	    ));
-	    updateView();
+	    try {
+		    resetSimulation(Simulator.loadGridFromFile(
+			fileChooser.getSelectedFile().getAbsolutePath(),
+			simulator.getAutomata()
+		));
+		updateView();
+	    } catch (Exception e) {
+		JOptionPane.showMessageDialog(this, 
+			"Unable to load the grid: " + e.getMessage(), 
+			"Error", JOptionPane.ERROR_MESSAGE);
+	    }
 	}
     }//GEN-LAST:event_loadGridButtonActionPerformed
+
+    private void saveStatsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveStatsButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+	fileChooser.setAcceptAllFileFilterUsed(false);
+	fileChooser.setFileFilter(new FileNameExtensionFilter("stats text file", "txt"));
+	if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+	    Stats.saveToCSVFile(
+		    fileChooser.getSelectedFile().getAbsolutePath(), 
+		    simulator.stats);
+	}
+    }//GEN-LAST:event_saveStatsButtonActionPerformed
     
     // <editor-fold defaultstate="collapsed" desc="StateListRenderer">
     //Thank this legend: https://coderanch.com/t/335943/java/Changing-background-color-JList
@@ -562,6 +604,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton pauseButton;
     private javax.swing.JButton randomizeGridButton;
     private javax.swing.JButton saveGridButton;
+    private javax.swing.JButton saveStatsButton;
     private javax.swing.JPanel simulationGroupPanel;
     private gui.SimulationPanel simulationPanel;
     private javax.swing.JTextField simulationSizeTextField;

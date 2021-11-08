@@ -193,7 +193,7 @@ public class Simulator {
 	return stats;
     }
     
-    public static void saveGridToFile(String filename, Simulator simulator) {
+    public static void saveGridToFile(String filename, Simulator simulator) throws IOException {
 	try(PrintWriter out = new PrintWriter(new FileWriter(filename))) {
 	    out.println(simulator.automata.getNumberOfStates());
 	    out.println(simulator.gridWidth + " " + simulator.gridHeight);
@@ -203,13 +203,11 @@ public class Simulator {
 		out.println();
 	    }
 	    
-	} catch (IOException e) {
-	    System.out.println("Unable to save the grid in the file");
 	}
 	
     }
     
-    public static Simulator loadGridFromFile(String filename, Automata automata) {
+    public static Simulator loadGridFromFile(String filename, Automata automata) throws Exception {
 	Simulator simulator = null;
 	try(BufferedReader in = new BufferedReader(new FileReader(filename))) {
 	    //line 1
@@ -234,8 +232,6 @@ public class Simulator {
 		i++;
 	    }
 	    
-	} catch (IOException e) {
-	    System.out.println("Unable to load from the file");
 	}
 	
 	return simulator;
