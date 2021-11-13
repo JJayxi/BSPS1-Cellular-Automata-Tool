@@ -23,9 +23,12 @@ public class ConditionAnd implements Condition {
 	this.conditionRight = conditionRight;
     }
     
-    @Override
-    public boolean evaluate(int[] neighbourStateCount, int cellState) {
-	return  conditionLeft.evaluate(neighbourStateCount, cellState) &&
-		conditionRight.evaluate(neighbourStateCount, cellState);
+     @Override
+    public String toString() {
+	return "\t(" + 
+		((conditionLeft != null) ? conditionLeft.toString() : "not set")
+		+ ")\n and \n\t(" + 
+		((conditionRight != null) ? conditionRight.toString() : "not set")
+		+ ")";
     }
 }

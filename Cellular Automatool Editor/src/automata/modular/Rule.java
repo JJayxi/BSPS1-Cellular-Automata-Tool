@@ -34,6 +34,16 @@ public class Rule {
 	this.toState = toState;
 	this.condition = condition;
     }
+
+    public int getCellState() {
+	return cellState;
+    }
+
+    public int getToState() {
+	return toState;
+    }
+    
+    
     
     /**
      * @param cellState change the state that the cell should have for this rule to isApplied
@@ -50,14 +60,10 @@ public class Rule {
 	this.toState = toState;
     }
     
-    /**
-     * @param neighbourStateCount an array that contains the number of cell in each state
-     * @param cellState the state of the cell in the middle of the neighbours
-     * @return returns wether the rule applies or not
-     */
-    public boolean isApplied(int[] neighbourStateCount, int cellState) {
-	return  this.cellState == cellState && 
-		condition.evaluate(neighbourStateCount, cellState);
+    @Override
+    public String toString() {
+	return "The cell changes to state " + toState + 
+		" if the current cell is of state " + cellState + " and:\n" +
+		condition.toString();
     }
-    
 }

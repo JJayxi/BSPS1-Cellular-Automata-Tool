@@ -3,7 +3,7 @@ package automata.modular.conditions;
 public class ConditionTrue implements Condition {
 
     @Override
-    public boolean evaluate(int[] neighbourStateCount, int cellState) {
-	return  true;
+    public String toString() {
+	return "always true";
     }
 }

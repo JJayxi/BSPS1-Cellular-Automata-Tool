@@ -24,8 +24,12 @@ public class ConditionOr implements Condition {
     }
     
     @Override
-    public boolean evaluate(int[] neighbourStateCount, int cellState) {
-	return  conditionLeft.evaluate(neighbourStateCount, cellState) ||
-		conditionRight.evaluate(neighbourStateCount, cellState);
+    public String toString() {
+	return "\t(" + 
+		((conditionLeft != null) ? conditionLeft.toString() : "not set")
+		+ ")\n or \n\t(" + 
+		((conditionRight != null) ? conditionRight.toString() : "not set")
+		+ ")";
     }
+    
 }

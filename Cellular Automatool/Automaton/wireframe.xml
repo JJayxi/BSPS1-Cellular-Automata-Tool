@@ -13,17 +13,15 @@
       <toState>3</toState>
     </Rule>
     <Rule>
-      <condition class="equal">
-        <number>1</number>
-        <applyState>1</applyState>
-      </condition>
-      <cellState>3</cellState>
-      <toState>1</toState>
-    </Rule>
-    <Rule>
-      <condition class="equal">
-        <number>2</number>
-        <applyState>1</applyState>
+      <condition class="or">
+        <conditionLeft class="equal">
+          <number>1</number>
+          <applyState>1</applyState>
+        </conditionLeft>
+        <conditionRight class="equal">
+          <number>2</number>
+          <applyState>1</applyState>
+        </conditionRight>
       </condition>
       <cellState>3</cellState>
       <toState>1</toState>

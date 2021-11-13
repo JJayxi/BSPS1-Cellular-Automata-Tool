@@ -23,8 +23,7 @@ public class ConditionNeighbourStateLessThan implements Condition{
     }
     
     @Override
-    public boolean evaluate(int[] neighbourStateCount, int cellState) {
-	return neighbourStateCount[applyState] < number;
+    public String toString() {
+	return "Has less than " + number + " neighbour cells in state " + applyState;
     }
-    
 }

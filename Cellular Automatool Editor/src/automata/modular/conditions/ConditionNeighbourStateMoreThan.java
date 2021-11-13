@@ -17,7 +17,8 @@ public class ConditionNeighbourStateMoreThan implements Condition{
     }
     
     @Override
-    public boolean evaluate(int[] neighbourStateCount, int cellState) {
-	return neighbourStateCount[applyState] > number;
+    public String toString() {
+	return "Has more than " + number + " neighbour cells in state " + applyState;
     }
+    
 }

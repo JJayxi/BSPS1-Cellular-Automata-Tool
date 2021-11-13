@@ -3,6 +3,9 @@ package gui;
 import automata.Automata;
 import automata.Simulator;
 import automata.modular.*;
+import automata.modular.conditions.ConditionNeighbourStateEqual;
+import automata.modular.conditions.ConditionOr;
+import automata.modular.conditions.ConditionTrue;
 import automata.stats.Stats;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
@@ -40,13 +43,16 @@ public class MainFrame extends javax.swing.JFrame {
 	/*
 	This is game of life created with the modular automata class.
 	*/
-//	ModularAutomata wireframe = new ModularAutomata(4);
-//	wireframe.addRule(new Rule(1, 2, new ConditionTrue()));
-//	wireframe.addRule(new Rule(2, 3, new ConditionTrue()));
-//	wireframe.addRule(new Rule(3, 1, new ConditionNeighbourStateEqual(1, 1)));
-//	wireframe.addRule(new Rule(3, 1, new ConditionNeighbourStateEqual(1, 2)));
-//	ModularAutomata.saveToXMLFile(wireframe, "wireframe.xml");
-	
+	/*ModularAutomata wireframe = new ModularAutomata(4);
+	wireframe.addRule(new Rule(1, 2, new ConditionTrue()));
+	wireframe.addRule(new Rule(2, 3, new ConditionTrue()));
+	wireframe.addRule(new Rule(3, 1, new ConditionOr(
+		new ConditionNeighbourStateEqual(1, 1),
+		new ConditionNeighbourStateEqual(1, 2))));
+	try {ModularAutomata.saveToXMLFile(wireframe, "wireframe.xml");
+	    System.out.println(" woked");}
+	catch (Exception e) {System.out.println("didnt work");}
+	*/
 	loadFromFile("Automaton/gameOfLife.xml");
 
 	/*

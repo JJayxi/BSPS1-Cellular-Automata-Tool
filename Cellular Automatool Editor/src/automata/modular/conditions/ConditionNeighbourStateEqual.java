@@ -17,7 +17,7 @@ public class ConditionNeighbourStateEqual implements Condition{
     }
     
     @Override
-    public boolean evaluate(int[] neighbourStateCount, int cellState) {
-	return neighbourStateCount[applyState] == number;
+    public String toString() {
+	return "Has exactly " + number + " neighbour cells in state " + applyState;
     }
 }

@@ -85,7 +85,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
-              <Component id="simulationPanel" alignment="0" pref="614" max="32767" attributes="0"/>
+              <Component id="simulationPanel" alignment="0" pref="616" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">

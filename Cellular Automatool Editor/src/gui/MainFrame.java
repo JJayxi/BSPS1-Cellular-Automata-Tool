@@ -5,19 +5,53 @@
  */
 package gui;
 
+import automata.modular.ModularAutomata;
+import automata.modular.Rule;
+import java.awt.Component;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import util.MiscUtil;
+
 /**
  *
  * @author jason
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Mainframe
-     */
+    private ModularAutomata automata;
+    
     public MainFrame() {
 	initComponents();
+	setTitle("Automata Editor");
+	automata = new ModularAutomata(2);
+	updateView();
     }
-
+    
+    public void updateView() {
+	int selectedIndex = stateList.getSelectedIndex();
+	stateList.setListData(automata.getStateStringArray());
+	
+	if(automata.getNumberOfStates() >= selectedIndex)
+	stateList.setCellRenderer(new StateListCellRenderer());
+	
+	ruleList.setListData(automata.getRuleStringArray());
+    }
+    
+    
+    private class StateListCellRenderer extends DefaultListCellRenderer {
+        public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+            c.setBackground(MiscUtil.colorFromState(index, automata.getNumberOfStates()));
+            return c;
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,22 +61,242 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        numberOfStatesLabel = new javax.swing.JLabel();
+        minus1NumberOfStatesButton = new javax.swing.JButton();
+        plus1NumberOfStatesButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ruleList = new javax.swing.JList();
+        addRuleButton = new javax.swing.JButton();
+        removeRuleButton = new javax.swing.JButton();
+        saveAutomataButton = new javax.swing.JButton();
+        loadAutomataButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        stateList = new javax.swing.JList();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        ruleTextArea = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Number of states:");
+
+        numberOfStatesLabel.setText("2");
+
+        minus1NumberOfStatesButton.setText("- 1");
+        minus1NumberOfStatesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                minus1NumberOfStatesButtonActionPerformed(evt);
+            }
+        });
+
+        plus1NumberOfStatesButton.setText("+ 1");
+        plus1NumberOfStatesButton.setPreferredSize(new java.awt.Dimension(60, 32));
+        plus1NumberOfStatesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                plus1NumberOfStatesButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Rules:");
+
+        ruleList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        ruleList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                ruleListValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(ruleList);
+
+        addRuleButton.setText("Add Rule");
+        addRuleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRuleButtonActionPerformed(evt);
+            }
+        });
+
+        removeRuleButton.setText("Remove Rule");
+
+        saveAutomataButton.setText("Save Automata");
+        saveAutomataButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAutomataButtonActionPerformed(evt);
+            }
+        });
+
+        loadAutomataButton.setText("Load Automata");
+        loadAutomataButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadAutomataButtonActionPerformed(evt);
+            }
+        });
+
+        stateList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jScrollPane2.setViewportView(stateList);
+
+        jLabel3.setText("States:");
+
+        ruleTextArea.setColumns(20);
+        ruleTextArea.setRows(5);
+        jScrollPane3.setViewportView(ruleTextArea);
+
+        jLabel4.setText("Selected Rule:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(numberOfStatesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(minus1NumberOfStatesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(plus1NumberOfStatesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(addRuleButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(removeRuleButton))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(loadAutomataButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(saveAutomataButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(numberOfStatesLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(minus1NumberOfStatesButton)
+                    .addComponent(plus1NumberOfStatesButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(addRuleButton)
+                            .addComponent(removeRuleButton)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveAutomataButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loadAutomataButton)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void minus1NumberOfStatesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minus1NumberOfStatesButtonActionPerformed
+        int currentN = automata.getNumberOfStates();
+	if(currentN == 1) return;
+	boolean existsRule = false;
+	for(Rule r : automata.getRules()) {
+	    if(r.getCellState() >= currentN || r.getToState() >= currentN) {
+		existsRule = true;
+		break;
+	    }
+	}
+	int confirmed = 0;
+	if(existsRule)confirmed = JOptionPane.showConfirmDialog(this, "Some rules require this number of states. By proceeding you will delete these rules. Would you like to proceed?");
+	if(confirmed != 0)return;
+	
+	for(Rule r : automata.getRules()) 
+	    if(r.getCellState() >= currentN || r.getToState() >= currentN) 
+		automata.getRules().remove(r);
+	automata.setNumberOfStates(currentN - 1);
+
+	updateView();
+    }//GEN-LAST:event_minus1NumberOfStatesButtonActionPerformed
+
+    private void plus1NumberOfStatesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plus1NumberOfStatesButtonActionPerformed
+        automata.setNumberOfStates(automata.getNumberOfStates() + 1);
+	
+	updateView();
+    }//GEN-LAST:event_plus1NumberOfStatesButtonActionPerformed
+
+    private void loadAutomataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAutomataButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+	fileChooser.setAcceptAllFileFilterUsed(false);
+	fileChooser.setFileFilter(new FileNameExtensionFilter("automaton .xml file", "xml"));
+	if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+	    try {
+	    automata = ModularAutomata.fromXMLFile(
+		    fileChooser.getSelectedFile().getAbsolutePath());
+	    } catch (Exception e) {
+		JOptionPane.showMessageDialog(this,
+			    "Unable to load the automata: " + e,
+			    "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    updateView();
+	}
+    }//GEN-LAST:event_loadAutomataButtonActionPerformed
+
+    private void saveAutomataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAutomataButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+	fileChooser.setAcceptAllFileFilterUsed(false);
+	fileChooser.setFileFilter(new FileNameExtensionFilter("automaton .xml file", "xml"));
+	if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+	    try {
+		ModularAutomata.saveToXMLFile(automata, 
+		    fileChooser.getSelectedFile().getAbsolutePath());
+	    } catch (Exception e) {
+		JOptionPane.showMessageDialog(this,
+			    "Unable to save the automata: " + e,
+			    "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    updateView();
+	}
+    }//GEN-LAST:event_saveAutomataButtonActionPerformed
+
+    private void ruleListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ruleListValueChanged
+        if(ruleList.getSelectedIndex() != -1)
+	    ruleTextArea.setText(
+		    automata.getRule(ruleList.getSelectedIndex()).toString());
+    }//GEN-LAST:event_ruleListValueChanged
+
+    private void addRuleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRuleButtonActionPerformed
+        Rule rule = new Rule(0, 0, null);
+	
+	JFrame ruleFrame = new RuleFrame(this, automata, rule);
+	setEnabled(false);
+	ruleFrame.setVisible(true);
+	ruleFrame.setAlwaysOnTop(true);
+    }//GEN-LAST:event_addRuleButtonActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -80,5 +334,22 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addRuleButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton loadAutomataButton;
+    private javax.swing.JButton minus1NumberOfStatesButton;
+    private javax.swing.JLabel numberOfStatesLabel;
+    private javax.swing.JButton plus1NumberOfStatesButton;
+    private javax.swing.JButton removeRuleButton;
+    private javax.swing.JList ruleList;
+    private javax.swing.JTextArea ruleTextArea;
+    private javax.swing.JButton saveAutomataButton;
+    private javax.swing.JList stateList;
     // End of variables declaration//GEN-END:variables
 }

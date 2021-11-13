@@ -31,6 +31,9 @@ public class ModularAutomata implements Automata {
      * @param numberOfStates the number of states that exist in this cellular
      * automata
      */
+    
+    public ArrayList<Rule> getRules() {return rules;}
+    
     public ModularAutomata(int numberOfStates) {
 	setNumberOfStates(numberOfStates);
     }
@@ -80,15 +83,6 @@ public class ModularAutomata implements Automata {
      * @param cellState the state of the cell that may change
      * @return the state of the cell in the next time step
      */
-    @Override
-    public int evaluate(int[] neighbourStateCount, int cellState) {
-	for (Rule rule : rules) {
-	    if (rule.isApplied(neighbourStateCount, cellState)) {
-		return rule.toState;
-	    }
-	}
-	return cellState;
-    }
 
     /**
      * @return returns the number of states that exists in this automata
@@ -102,6 +96,15 @@ public class ModularAutomata implements Automata {
 	String[] strings = new String[numberOfStates];
 	for(int i = 0; i < numberOfStates; i++) {
 	    strings[i] = "State " + i;
+	}
+	
+	return strings;
+    }
+    
+    public String[] getRuleStringArray() {
+	String[] strings = new String[rules.size()];
+	for(int i = 0; i < rules.size(); i++) {
+	    strings[i] = "Rule " + i;
 	}
 	
 	return strings;
