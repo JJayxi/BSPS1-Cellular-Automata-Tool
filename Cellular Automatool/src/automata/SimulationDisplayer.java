@@ -32,6 +32,7 @@ public class SimulationDisplayer {
 	scale = width / simulator.gridWidth;
     }
     
+    //Thanks this guy https://www.youtube.com/watch?v=ZQ8qtAizis4 javidx9 for the zooming and panning
     public void changeZoom(int n, Point2D mouse) {
 	Point2D beforeZoom = screenToSim(mouse);
 	scale *= 1 + n * 0.05;

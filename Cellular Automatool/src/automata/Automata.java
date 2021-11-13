@@ -2,7 +2,6 @@ package automata;
 
 public interface Automata {
     /**
-     * 
      * @param neighbourStateCount 
      * Array containing the number of the neighbouring cells of each state. 
      * At neighbourStateCount[i], it contains the number of cells in state i
