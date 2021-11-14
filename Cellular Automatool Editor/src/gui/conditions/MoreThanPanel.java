@@ -106,7 +106,7 @@ public class MoreThanPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void numberComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_numberComboBoxItemStateChanged
-        moreThanCondition.setNumber(numberComboBox.getSelectedIndex() + 1);
+        moreThanCondition.setNumber(numberComboBox.getSelectedIndex());
     }//GEN-LAST:event_numberComboBoxItemStateChanged
 
     private void stateComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_stateComboBoxItemStateChanged
