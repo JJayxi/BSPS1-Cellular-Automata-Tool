@@ -11,16 +11,8 @@ public class ConditionOr implements Condition {
 	return conditionLeft;
     }
 
-    public void setConditionLeft(Condition conditionLeft) {
-	this.conditionLeft = conditionLeft;
-    }
-
     public Condition getConditionRight() {
 	return conditionRight;
-    }
-
-    public void setConditionRight(Condition conditionRight) {
-	this.conditionRight = conditionRight;
     }
     
     @Override

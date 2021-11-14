@@ -36,21 +36,6 @@ public class Rule {
     }
     
     /**
-     * @param cellState change the state that the cell should have for this rule to isApplied
-     */
-    public void setCellState(int cellState) {
-	this.cellState = cellState;
-    }
-    
-    /**s
-     * @param toState change the state that this cell will have if the rule applies 
-     * and the condition is true
-     */
-    public void setToState(int toState) {
-	this.toState = toState;
-    }
-    
-    /**
      * @param neighbourStateCount an array that contains the number of cell in each state
      * @param cellState the state of the cell in the middle of the neighbours
      * @return returns wether the rule applies or not

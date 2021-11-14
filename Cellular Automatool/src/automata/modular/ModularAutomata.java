@@ -32,36 +32,8 @@ public class ModularAutomata implements Automata {
      * automata
      */
     public ModularAutomata(int numberOfStates) {
-	setNumberOfStates(numberOfStates);
-    }
-
-    /**
-     * Set the number of states that this cellular automata can have
-     *
-     * @param numberOfStates the number of states that the cellular automata
-     * should have
-     */
-    public void setNumberOfStates(int numberOfStates) {
 	this.numberOfStates = numberOfStates;
     }
-
-    /**
-     * @param rule Rule that will be added in the rule list and will be
-     * considered when calling the function evaluate
-     */
-    public void addRule(Rule rule) {
-	rules.add(rule);
-    }
-
-    /**
-     * Remove a rule in the rules array
-     *
-     * @param n Position in the rules array of the rule that will be removed
-     */
-    public void removeRule(int n) {
-	rules.remove(n);
-    }
-
     /**
      * @param n Position of the rule in an array
      * @return returns the Rule in that position in the ModularAutomata.rules

@@ -6,22 +6,6 @@ public class ConditionAnd implements Condition {
 	this.conditionLeft = conditionLeft;
 	this.conditionRight = conditionRight;
     }
-
-    public Condition getConditionLeft() {
-	return conditionLeft;
-    }
-
-    public void setConditionLeft(Condition conditionLeft) {
-	this.conditionLeft = conditionLeft;
-    }
-
-    public Condition getConditionRight() {
-	return conditionRight;
-    }
-
-    public void setConditionRight(Condition conditionRight) {
-	this.conditionRight = conditionRight;
-    }
     
     @Override
     public boolean evaluate(int[] neighbourStateCount, int cellState) {

@@ -14,14 +14,6 @@ public class ConditionNeighbourStateLessThan implements Condition{
 	this.number = number;
     }
     
-    public void setApplyState(int applyState) {
-	this.applyState = applyState;
-    }
-    
-    public void setNumber(int number) {
-	this.number = number;
-    }
-    
     @Override
     public boolean evaluate(int[] neighbourStateCount, int cellState) {
 	return neighbourStateCount[applyState] < number;
