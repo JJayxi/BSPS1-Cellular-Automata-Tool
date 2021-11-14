@@ -42,6 +42,15 @@ public class Rule {
     public int getToState() {
 	return toState;
     }
+
+    public Condition getCondition() {
+	return condition;
+    }
+
+    public void setCondition(Condition condition) {
+	this.condition = condition;
+    }
+    
     
     
     
@@ -64,6 +73,6 @@ public class Rule {
     public String toString() {
 	return "The cell changes to state " + toState + 
 		" if the current cell is of state " + cellState + " and:\n" +
-		condition.toString();
+		((condition == null) ? "not set" : condition.toString());
     }
 }

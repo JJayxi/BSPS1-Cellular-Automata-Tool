@@ -8,11 +8,8 @@ package gui;
 import automata.modular.ModularAutomata;
 import automata.modular.Rule;
 import java.awt.Component;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -118,6 +115,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         removeRuleButton.setText("Remove Rule");
+        removeRuleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeRuleButtonActionPerformed(evt);
+            }
+        });
 
         saveAutomataButton.setText("Save Automata");
         saveAutomataButton.addActionListener(new java.awt.event.ActionListener() {
@@ -191,10 +193,10 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(numberOfStatesLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(minus1NumberOfStatesButton)
-                    .addComponent(plus1NumberOfStatesButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(plus1NumberOfStatesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minus1NumberOfStatesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
@@ -214,7 +216,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(saveAutomataButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(loadAutomataButton)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -291,11 +293,22 @@ public class MainFrame extends javax.swing.JFrame {
     private void addRuleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRuleButtonActionPerformed
         Rule rule = new Rule(0, 0, null);
 	
-	JFrame ruleFrame = new RuleFrame(this, automata, rule);
-	setEnabled(false);
-	ruleFrame.setVisible(true);
-	ruleFrame.setAlwaysOnTop(true);
+	new RuleFrame(this, automata, rule)
+	.addWindowListener(new java.awt.event.WindowAdapter() {
+	@Override
+	    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		automata.addRule(rule);
+		updateView();
+	    }
+	});
     }//GEN-LAST:event_addRuleButtonActionPerformed
+
+    private void removeRuleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeRuleButtonActionPerformed
+       if(ruleList.getSelectedIndex() != -1) {
+	   automata.getRules().remove(ruleList.getSelectedIndex());
+	   updateView();
+       }
+    }//GEN-LAST:event_removeRuleButtonActionPerformed
     
     /**
      * @param args the command line arguments
@@ -308,7 +321,7 @@ public class MainFrame extends javax.swing.JFrame {
 	 */
 	try {
 	    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-		if ("Nimbus".equals(info.getName())) {
+		if ("Windows".equals(info.getName())) {
 		    javax.swing.UIManager.setLookAndFeel(info.getClassName());
 		    break;
 		}

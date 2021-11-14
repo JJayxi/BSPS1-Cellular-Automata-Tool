@@ -1,9 +1,9 @@
 package automata.modular.conditions;
 
-public class ConditionNeighbourStateEqual implements Condition{
+public class ConditionEqual implements Condition{
     protected int number, applyState;
     
-    public ConditionNeighbourStateEqual(int applyState, int number) {
+    public ConditionEqual(int applyState, int number) {
 	this.applyState = applyState;
 	this.number = number;
     }

@@ -5,13 +5,15 @@
  */
 package gui;
 
+import automata.modular.ConditionWrapper;
 import automata.modular.ModularAutomata;
 import automata.modular.Rule;
+import automata.modular.conditions.ConditionLessThan;
 import java.awt.Component;
+import java.awt.event.WindowEvent;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.WindowConstants;
 import util.MiscUtil;
 
 /**
@@ -21,11 +23,14 @@ import util.MiscUtil;
 public class RuleFrame extends javax.swing.JFrame {
 
     private ModularAutomata automata;
+    private Rule rule;
     public RuleFrame(JFrame parent, ModularAutomata automata, Rule rule) {
 	initComponents();
 	this.automata = automata;
+	this.rule = rule;
 	cellStateComboBox.removeAllItems();
 	toStateComboBox.removeAllItems();
+	
 	
 	cellStateComboBox.setRenderer(new StateListCellRenderer());
 	toStateComboBox.setRenderer(new StateListCellRenderer());
@@ -35,6 +40,9 @@ public class RuleFrame extends javax.swing.JFrame {
 	    toStateComboBox.addItem(str);
 	}
 	
+	setVisible(true);
+	setAlwaysOnTop(true);
+	parent.setEnabled(false);
 	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	
 	addWindowListener(new java.awt.event.WindowAdapter() {
@@ -63,29 +71,48 @@ public class RuleFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         toStateComboBox = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        conditionTextArea = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        setConditionButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
-        conditionComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        cellStateComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cellStateComboBoxItemStateChanged(evt);
+            }
+        });
 
         jLabel1.setText("Applies to state:");
 
         jLabel2.setText("To state:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        toStateComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                toStateComboBoxItemStateChanged(evt);
+            }
+        });
+
+        conditionTextArea.setColumns(20);
+        conditionTextArea.setRows(5);
+        jScrollPane1.setViewportView(conditionTextArea);
 
         jLabel3.setText("Condition:");
 
-        jButton1.setText("Set Condition");
+        setConditionButton.setText("Set Condition");
+        setConditionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setConditionButtonActionPerformed(evt);
+            }
+        });
 
         saveButton.setText("Save");
-
-        conditionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Less Than", "More than", "Equal", "True", "Or", "And" }));
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,13 +133,10 @@ public class RuleFrame extends javax.swing.JFrame {
                                     .addComponent(toStateComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)))
                             .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(saveButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(conditionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)))))
+                            .addComponent(setConditionButton, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -135,10 +159,7 @@ public class RuleFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(conditionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(setConditionButton)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -146,17 +167,44 @@ public class RuleFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void setConditionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setConditionButtonActionPerformed
+        ConditionWrapper conditionWrapper = new ConditionWrapper(rule.getCondition());
+	
+	if(conditionWrapper.condition == null)conditionWrapper.condition = new ConditionLessThan(1, 0);
+	
+	setEnabled(false);
+	new ConditionFrame(this, automata, conditionWrapper)
+	.addWindowListener(new java.awt.event.WindowAdapter() {
+	@Override
+	    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		rule.setCondition(conditionWrapper.condition);
+		conditionTextArea.setText(conditionWrapper.condition.toString());
+	    }
+	});
+    }//GEN-LAST:event_setConditionButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void cellStateComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cellStateComboBoxItemStateChanged
+        rule.setCellState(cellStateComboBox.getSelectedIndex());
+    }//GEN-LAST:event_cellStateComboBoxItemStateChanged
+
+    private void toStateComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_toStateComboBoxItemStateChanged
+        rule.setToState(toStateComboBox.getSelectedIndex());
+    }//GEN-LAST:event_toStateComboBoxItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cellStateComboBox;
-    private javax.swing.JComboBox<String> conditionComboBox;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextArea conditionTextArea;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton saveButton;
+    private javax.swing.JButton setConditionButton;
     private javax.swing.JComboBox toStateComboBox;
     // End of variables declaration//GEN-END:variables
 }
