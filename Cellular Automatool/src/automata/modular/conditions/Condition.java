@@ -11,4 +11,4 @@ public interface Condition {
      * @return returns true or false 
      */
     public boolean evaluate(int[] neighbourStateCount, int cellState);
-}
+}

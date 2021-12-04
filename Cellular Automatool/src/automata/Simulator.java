@@ -32,9 +32,6 @@ public class Simulator {
 	this.gridWidth = gridWidth;
 	randomizeGrid();
 
-	//////////
-	newGrid = new int[gridHeight][gridWidth];
-	newGridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
     }
     
     public void setAutomata(Automata automata) {
@@ -141,9 +138,6 @@ public class Simulator {
 	if (rg) gridCount[row + 1][col][state]+=val;
     }
     
-    
-    private int[][][] newGridCount;
-    private int[][] newGrid;
     /**
      * steps the simulation into the next timestep. The local rule is calculated
      * for every cell, then the calculated state is applied to the cell. \n The
@@ -152,35 +146,31 @@ public class Simulator {
      * be tracked.
      */
     public void update() {
-	int[] cellCount = new int[automata.getNumberOfStates()];
-
-	for (int[][] row : newGridCount) {
-	    for (int[] cell : row) {
-		Arrays.fill(cell, 0);
-	    }
-	}
-
+	//for stats
 	int activity = 0;
+	int[] cellCount = new int[automata.getNumberOfStates()];
+	
+	//grid in next time step
+	int[][] newGrid = new int[gridHeight][gridWidth];
+	int[][][] newGridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
+
+	
 	for (int i = 0; i < gridHeight; i++) {
 	    for (int j = 0; j < gridWidth; j++) {
-		cellCount[grid[j][i]]++;
-		setCellValue(i, j,
-			    automata.evaluate(gridCount[j][i], grid[j][i]),
+		int nextState = automata.evaluate(gridCount[j][i], grid[j][i]);
+		setCellValue(i, j, nextState,
 			    newGrid, newGridCount);
-		if (grid[i][j] != newGrid[i][j])
-		    activity++;
 		
-
-	    }
-	}
-	int[][] temp2 = grid;
+		//tracking stats
+		cellCount[grid[j][i]]++;
+		if (grid[i][j] != nextState)activity++;
+	}}
+	
+	//updating grid
 	grid = newGrid;
-	newGrid = temp2;
-
-	int[][][] temp3 = gridCount;
 	gridCount = newGridCount;
-	newGridCount = temp3;
-
+	
+	//saving stats
 	stats.addStepValues(activity, cellCount);
     }
 

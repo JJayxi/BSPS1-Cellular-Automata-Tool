@@ -3,11 +3,10 @@ package gui;
 import automata.Automata;
 import automata.Simulator;
 import automata.modular.*;
-import automata.modular.conditions.ConditionNeighbourStateEqual;
-import automata.modular.conditions.ConditionOr;
-import automata.modular.conditions.ConditionTrue;
 import automata.stats.Stats;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFileChooser;
@@ -60,11 +59,12 @@ public class MainFrame extends javax.swing.JFrame {
 	For each tick, the timer:
 	- updates the simulation
 	- draws the simulation
-	- draws the graphs
+	- draws	    the graphs
 	 */
-	timer = new Timer(simulationSpeedSlider.getValue(), (t) -> {
-	    simulator.update();
+	timer = new Timer(simulationSpeedSlider.getValue(), new ActionListener() {
+	    public void actionPerformed(ActionEvent evt) {simulator.update();
 	    updateView();
+	    }
 	});
     }
     
@@ -77,8 +77,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void resetSimulation(Automata automata, int width, int height) {
 	//we set the running simulation to a new simulation that is width by height wide
-	resetSimulation(new Simulator(width, height, automata));	
-	
+	resetSimulation(new Simulator(width, height, automata));
     }
     
     private void resetSimulation(Simulator simulator) {

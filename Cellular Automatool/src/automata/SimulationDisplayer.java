@@ -125,4 +125,4 @@ public class SimulationDisplayer {
 	g.drawRect((int)simCord.getX(), (int)simCord.getY(), 
 			   (int)scale + 1, (int)scale + 1);
     }
-}
+}

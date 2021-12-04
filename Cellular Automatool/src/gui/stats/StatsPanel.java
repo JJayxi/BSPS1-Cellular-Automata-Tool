@@ -143,4 +143,4 @@ public class StatsPanel extends javax.swing.JPanel {
     private gui.stats.ActivityGraphPanel rulesUsedGraphPanel;
     private gui.stats.ActivityGraphPanel stateGraphPanel;
     // End of variables declaration//GEN-END:variables
-}
+}

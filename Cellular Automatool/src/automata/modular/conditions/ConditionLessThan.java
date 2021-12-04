@@ -5,11 +5,11 @@
  */
 package automata.modular.conditions;
 
-public class ConditionNeighbourStateLessThan implements Condition{
+public class ConditionLessThan implements Condition{
     
     protected int number, applyState;
     
-    public ConditionNeighbourStateLessThan(int applyState, int number) {
+    public ConditionLessThan(int applyState, int number) {
 	this.applyState = applyState;
 	this.number = number;
     }

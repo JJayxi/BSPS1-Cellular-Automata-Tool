@@ -20,4 +20,4 @@ public class ConditionOr implements Condition {
 	return  conditionLeft.evaluate(neighbourStateCount, cellState) ||
 		conditionRight.evaluate(neighbourStateCount, cellState);
     }
-}
+}
