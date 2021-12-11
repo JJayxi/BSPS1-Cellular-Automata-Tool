@@ -32,7 +32,7 @@ public class Stats {
     /**
      * the number of states that the simulation has.
      */
-    private final int numberOfStates;
+    private final int numStates;
     
     /**
      * create a new object to track the activity and cell distribution
@@ -43,7 +43,7 @@ public class Stats {
     public Stats(int gridWidth, int gridHeight, int numberOfStates) {
 	this.gridWidth = gridWidth;
 	this.gridHeight = gridHeight;
-	this.numberOfStates = numberOfStates;
+	this.numStates = numberOfStates;
     }
     
     /**
@@ -73,11 +73,11 @@ public class Stats {
 	    out.println("NUMBER_OF_CELLS");
 	    out.println(stats.gridHeight * stats.gridWidth);
 	    out.println("NUMBER_OF_STATES");
-	    out.println(stats.numberOfStates);
+	    out.println(stats.numStates);
 	    out.println("ACTIVITY, STATESCOUNT");
 	    for (int i = 0; i < stats.activity.size(); i++) {
 		out.print(stats.activity.get(i));
-		for (int j = 0; j < stats.numberOfStates; j++) {
+		for (int j = 0; j < stats.numStates; j++) {
 		    out.print("," + stats.cellCounting.get(i)[j]);
 		}
 		out.println();
@@ -101,7 +101,7 @@ public class Stats {
 	g.setColor(Color.white);
 	g.fillRect(0, 0, width, height);
 	g.setColor(Color.black);
-	float dw = (float) width / activity.size();
+	float dw = (float) width / (activity.size()-1);
 	for(int i = 0; i < activity.size() - 1; i++) {
 	    int h1 = height - (int)((float)activity.get(i) / maxActivity * height);
 	    int h2 = height - (int)((float)activity.get(i + 1) / maxActivity * height);
@@ -117,28 +117,35 @@ public class Stats {
      * @param height the height in pixels
      */
     public void showCellCount(Graphics2D g, int width, int height) {
-	    int[] polygonsX = new int[activity.size() * 2];
-	    int[][] polygonsY = new int[numberOfStates][activity.size() * 2];
-	    float dw = (float) width / activity.size();
-	    
-	    g.setColor(Color.white);
-	    g.fillRect(0, 0, width, height);
-	    
-	    for(int i = 0; i < cellCounting.size(); i++) {
-		polygonsX[i] = polygonsX[polygonsX.length - i - 1] = (int)(i * dw);
+	//number of vertices
+	int nVertex = activity.size() * 2;
+	//vertices coordinates
+	int[] polygonsX = new int[nVertex];
+	int[][] polygonsY = new int[numStates][nVertex];
+	//step width
+	float dw = (float) width / (activity.size()-1);
+
+	for(int i = 0; i < activity.size(); i++) {
+	    polygonsX[i] = polygonsX[nVertex - i - 1] = (int)(i * dw);
+
+	    float h = 0;
+	    for(int state = 0; state < numStates; state++) {
+		//top vertex of polygon
+		polygonsY[state][i] = (int)(h * height);
 		
-		float h = 0;
-		for(int state = 0; state < polygonsY.length; state++) {
-		    polygonsY[state][i] = (int)(h * height);
-		    h += cellCounting.get(i)[state] / ((float)gridWidth * gridHeight);
-		    polygonsY[state][polygonsX.length - 1 - i] = (int)(h * height);
-		}
+		h += cellCounting.get(i)[state] / ((float)gridWidth * gridHeight);
+		//bottom vertex of polygon
+		polygonsY[state][nVertex - 1 - i] = (int)(h * height);
 	    }
-	    
-	    for(int state = 0; state < polygonsY.length; state++) {
-		g.setColor(MiscUtil.colorFromState(state, numberOfStates));
-		g.fillPolygon(polygonsX, polygonsY[state], activity.size() * 2);
-	    }
+	}
+	
+	//draw the background and the polygons
+	g.setColor(Color.white);
+	g.fillRect(0, 0, width, height);
+	for(int state = 0; state < numStates; state++) {
+	    g.setColor(MiscUtil.colorFromState(state, numStates));
+	    g.fillPolygon(polygonsX, polygonsY[state], nVertex);
+	}
 	    
     }
 }

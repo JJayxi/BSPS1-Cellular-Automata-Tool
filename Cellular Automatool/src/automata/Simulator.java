@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 
 public class Simulator {
 
@@ -26,7 +25,7 @@ public class Simulator {
 
 	this.automata = automata;
 
-	stats = new Stats(gridWidth, gridHeight, automata.getNumberOfStates());
+	stats = new Stats(gridWidth, gridHeight, automata.numStates());
 
 	this.gridHeight = gridHeight;
 	this.gridWidth = gridWidth;
@@ -48,10 +47,10 @@ public class Simulator {
      */
     public void randomizeGrid() {
 	grid = new int[gridHeight][gridWidth];
-	gridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
+	gridCount = new int[gridHeight][gridWidth][automata.numStates()];
 	for (int i = 0; i < gridHeight; i++)
 	    for (int j = 0; j < gridWidth; j++)
-		setCellValue(j, i, (int)(Math.random() * automata.getNumberOfStates()));
+		setCellValue(j, i, (int)(Math.random() * automata.numStates()));
     }
     
     /**
@@ -60,12 +59,13 @@ public class Simulator {
      */
     public void clearToState(int state) {
 	grid = new int[gridHeight][gridWidth];
-	gridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
+	gridCount = new int[gridHeight][gridWidth][automata.numStates()];
 	for (int i = 0; i < gridHeight; i++)
 	    for (int j = 0; j < gridWidth; j++)
 		setCellValue(j, i, state);
     }
     
+    //<editor-fold defaultstate="collapsed" desc="setCells">
     /**
      * Set's a cell to a state and add it's state to the neighbours neighbours-count
      * @param col
@@ -137,6 +137,7 @@ public class Simulator {
 	if (rm) gridCount[row - 1][col][state]+=val;
 	if (rg) gridCount[row + 1][col][state]+=val;
     }
+    //</editor-fold>
     
     /**
      * steps the simulation into the next timestep. The local rule is calculated
@@ -148,21 +149,21 @@ public class Simulator {
     public void update() {
 	//for stats
 	int activity = 0;
-	int[] cellCount = new int[automata.getNumberOfStates()];
+	int[] cellCount = new int[automata.numStates()];
 	
 	//grid in next time step
 	int[][] newGrid = new int[gridHeight][gridWidth];
-	int[][][] newGridCount = new int[gridHeight][gridWidth][automata.getNumberOfStates()];
+	int[][][] newGridCount = new int[gridHeight][gridWidth][automata.numStates()];
 
 	
 	for (int i = 0; i < gridHeight; i++) {
 	    for (int j = 0; j < gridWidth; j++) {
-		int nextState = automata.evaluate(gridCount[j][i], grid[j][i]);
-		setCellValue(i, j, nextState,
+		int nextState = automata.evaluate(gridCount[i][j], grid[i][j]);
+		setCellValue(j, i, nextState,
 			    newGrid, newGridCount);
 		
 		//tracking stats
-		cellCount[grid[j][i]]++;
+		cellCount[grid[i][j]]++;
 		if (grid[i][j] != nextState)activity++;
 	}}
 	
@@ -185,7 +186,7 @@ public class Simulator {
     
     public static void saveGridToFile(String filename, Simulator simulator) throws IOException {
 	try(PrintWriter out = new PrintWriter(new FileWriter(filename))) {
-	    out.println(simulator.automata.getNumberOfStates());
+	    out.println(simulator.automata.numStates());
 	    out.println(simulator.gridWidth + " " + simulator.gridHeight);
 	    for(int i = 0; i < simulator.gridHeight; i++) {
 		for(int j = 0; j < simulator.gridWidth; j++)
@@ -202,7 +203,7 @@ public class Simulator {
 	try(BufferedReader in = new BufferedReader(new FileReader(filename))) {
 	    //line 1
 	    String line = in.readLine();
-	    if(Integer.valueOf(line) != automata.getNumberOfStates()) return null;
+	    if(Integer.valueOf(line) != automata.numStates()) return null;
 	    line = in.readLine();
 	    String[] splitted = line.split(" ");
 	    simulator = new Simulator(
@@ -214,7 +215,7 @@ public class Simulator {
 	    simulator.grid = new int[simulator.gridHeight][simulator.gridHeight];
 	    simulator.gridCount = new int[simulator.gridHeight]
 		    [simulator.gridWidth]
-		    [automata.getNumberOfStates()];
+		    [automata.numStates()];
 	    while((line = in.readLine()) != null) {
 		splitted = line.split(",");
 		for (int j = 0; j < splitted.length; j++)

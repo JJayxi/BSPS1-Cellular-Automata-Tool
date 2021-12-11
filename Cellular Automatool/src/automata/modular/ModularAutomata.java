@@ -47,18 +47,17 @@ public class ModularAutomata implements Automata {
      * The local function that returns the state of the next cell according to
      * the local parameters
      *
-     * @param neighbourStateCount an array that contains the number of cell in
+     * @param neighbourStates an array that contains the number of cell in
      * each state
      * @param cellState the state of the cell that may change
      * @return the state of the cell in the next time step
      */
     @Override
-    public int evaluate(int[] neighbourStateCount, int cellState) {
-	for (Rule rule : rules) {
-	    if (rule.isApplied(neighbourStateCount, cellState)) {
-		return rule.toState;
-	    }
-	}
+    public int evaluate(int[] neighbourStates, int cellState) {
+	for (Rule rule : rules)
+	if (rule.isApplied(neighbourStates, cellState))
+	    return rule.toState;
+	
 	return cellState;
     }
 
@@ -66,7 +65,7 @@ public class ModularAutomata implements Automata {
      * @return returns the number of states that exists in this automata
      */
     @Override
-    public int getNumberOfStates() {
+    public int numStates() {
 	return numberOfStates;
     }
     

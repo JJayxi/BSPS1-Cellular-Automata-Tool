@@ -11,7 +11,7 @@ public class RockPaperScissors implements Automata {
     //state n+1 beats n 
     private final int N = 3;
     @Override
-    public int getNumberOfStates() {
+    public int numStates() {
 	return N;
     }
     

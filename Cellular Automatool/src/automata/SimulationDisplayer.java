@@ -88,7 +88,7 @@ public class SimulationDisplayer {
 	g.setColor(Color.white);
 	g.fillRect(0, 0, width, height);
 	
-	Color[] cols = new Color[simulator.automata.getNumberOfStates()];
+	Color[] cols = new Color[simulator.automata.numStates()];
 	for(int i = 0; i < cols.length; i++)
 	    cols[i] = MiscUtil.colorFromState(i, cols.length);
 	
@@ -125,4 +125,4 @@ public class SimulationDisplayer {
 	g.drawRect((int)simCord.getX(), (int)simCord.getY(), 
 			   (int)scale + 1, (int)scale + 1);
     }
-}
+}

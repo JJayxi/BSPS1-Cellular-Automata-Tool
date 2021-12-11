@@ -553,7 +553,7 @@ public class MainFrame extends javax.swing.JFrame {
     private class StateListCellRenderer extends DefaultListCellRenderer {
         public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
             Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-            c.setBackground(MiscUtil.colorFromState(index, simulator.getAutomata().getNumberOfStates()));
+            c.setBackground(MiscUtil.colorFromState(index, simulator.getAutomata().numStates()));
             return c;
         }
     }
