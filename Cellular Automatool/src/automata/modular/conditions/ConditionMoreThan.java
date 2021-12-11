@@ -9,7 +9,7 @@ public class ConditionMoreThan implements Condition{
     }
     
     @Override
-    public boolean evaluate(int[] neighbourStateCount, int cellState) {
+    public boolean isTrue(int[] neighbourStateCount, int cellState) {
 	return neighbourStateCount[applyState] > number;
     }
 }
