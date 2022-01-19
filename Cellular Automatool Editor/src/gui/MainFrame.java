@@ -32,6 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     public void updateView() {
 	int selectedIndex = stateList.getSelectedIndex();
+	numberOfStatesLabel.setText(automata.getNumberOfStates() + "");
 	stateList.setListData(automata.getStateStringArray());
 	
 	if(automata.getNumberOfStates() >= selectedIndex)

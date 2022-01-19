@@ -1,3 +1,4 @@
+
 package automata.modular;
 
 import automata.modular.conditions.Condition;
@@ -42,7 +43,7 @@ public class Rule {
      */
     public boolean isApplied(int[] neighbourStateCount, int cellState) {
 	return  this.cellState == cellState && 
-		condition.evaluate(neighbourStateCount, cellState);
+		condition.isTrue(neighbourStateCount, cellState);
     }
     
-}
+}

@@ -1,3 +1,4 @@
+
 package automata.modular.conditions;
 
 public class ConditionAnd implements Condition {
@@ -8,8 +9,8 @@ public class ConditionAnd implements Condition {
     }
     
     @Override
-    public boolean evaluate(int[] neighbourStateCount, int cellState) {
-	return  conditionLeft.evaluate(neighbourStateCount, cellState) &&
-		conditionRight.evaluate(neighbourStateCount, cellState);
+    public boolean isTrue(int[] neighbourStateCount, int cellState) {
+	return  conditionLeft.isTrue(neighbourStateCount, cellState) &&
+		conditionRight.isTrue(neighbourStateCount, cellState);
     }
-}
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modularAutomata>
+  <numberOfStates>2</numberOfStates>
+  <rules>
+    <Rule>
+      <condition class="or">
+        <conditionLeft class="lessThan">
+          <number>2</number>
+          <applyState>1</applyState>
+        </conditionLeft>
+        <conditionRight class="moreThan">
+          <number>3</number>
+          <applyState>1</applyState>
+        </conditionRight>
+      </condition>
+      <cellState>1</cellState>
+      <toState>0</toState>
+    </Rule>
+    <Rule>
+      <condition class="equal">
+        <number>3</number>
+        <applyState>1</applyState>
+      </condition>
+      <cellState>0</cellState>
+      <toState>1</toState>
+    </Rule>
+  </rules>
+</modularAutomata>

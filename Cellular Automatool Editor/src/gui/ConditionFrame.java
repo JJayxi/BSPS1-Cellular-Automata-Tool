@@ -124,6 +124,7 @@ public class ConditionFrame extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(644, 200));
 
         conditionTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Less Than", "More Than", "Equal", "And", "Or", "True" }));
         conditionTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
@@ -145,6 +146,8 @@ public class ConditionFrame extends javax.swing.JFrame {
                 doneButtonActionPerformed(evt);
             }
         });
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(502, 200));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -196,7 +199,7 @@ public class ConditionFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

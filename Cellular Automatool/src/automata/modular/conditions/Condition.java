@@ -10,5 +10,6 @@ public interface Condition {
      * @param cellState
      * @return returns true or false 
      */
-    public boolean evaluate(int[] neighbourStateCount, int cellState);
-}
+    public boolean isTrue(int[] neighbourStateCount, int cellState);
+}
+
