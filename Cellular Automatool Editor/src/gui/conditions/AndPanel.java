@@ -10,6 +10,8 @@ import automata.modular.ModularAutomata;
 import automata.modular.conditions.ConditionAnd;
 import gui.ConditionFrame;
 import javax.swing.JFrame;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 
 
 public class AndPanel extends javax.swing.JPanel {
@@ -124,15 +126,16 @@ public class AndPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_setLeftConditionButtonActionPerformed
 
     private void setRightConditionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRightConditionButtonActionPerformed
-        ConditionWrapper conditionWrapper = new ConditionWrapper(andCondition.getConditionRight());
+        ConditionWrapper wrapper = new ConditionWrapper(andCondition.getConditionRight());
 	
-	new ConditionFrame(parent, automata, conditionWrapper).addWindowListener(new java.awt.event.WindowAdapter() {
+	JFrame frame = new ConditionFrame(parent, automata, wrapper);
+	frame.addWindowListener(new WindowAdapter() {
 	@Override
-	    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		andCondition.setConditionRight(conditionWrapper.condition);
-		rightTextField.setText(conditionWrapper.condition.toString());
+	    public void windowClosing(WindowEvent windowEvent) {
+		andCondition.setConditionRight(wrapper.condition);
+		rightTextField.setText(wrapper.condition.toString());
 	    }
-	});
+	}); 
     }//GEN-LAST:event_setRightConditionButtonActionPerformed
 
 
