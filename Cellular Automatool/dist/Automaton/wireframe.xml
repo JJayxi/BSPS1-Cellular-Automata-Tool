@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modularAutomata>
+  <numberOfStates>4</numberOfStates>
+  <rules>
+    <Rule>
+      <condition class="true"/>
+      <cellState>1</cellState>
+      <toState>2</toState>
+    </Rule>
+    <Rule>
+      <condition class="true"/>
+      <cellState>2</cellState>
+      <toState>3</toState>
+    </Rule>
+    <Rule>
+      <condition class="or">
+        <conditionLeft class="equal">
+          <number>1</number>
+          <applyState>1</applyState>
+        </conditionLeft>
+        <conditionRight class="equal">
+          <number>2</number>
+          <applyState>1</applyState>
+        </conditionRight>
+      </condition>
+      <cellState>3</cellState>
+      <toState>1</toState>
+    </Rule>
+  </rules>
+</modularAutomata>

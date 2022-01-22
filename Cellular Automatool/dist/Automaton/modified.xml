@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modularAutomata>
+  <numberOfStates>3</numberOfStates>
+  <rules>
+    <Rule>
+      <condition class="equal">
+        <number>3</number>
+        <applyState>1</applyState>
+      </condition>
+      <cellState>0</cellState>
+      <toState>1</toState>
+    </Rule>
+    <Rule>
+      <condition class="moreThan">
+        <number>3</number>
+        <applyState>1</applyState>
+      </condition>
+      <cellState>1</cellState>
+      <toState>0</toState>
+    </Rule>
+    <Rule>
+      <condition class="lessThan">
+        <number>2</number>
+        <applyState>1</applyState>
+      </condition>
+      <cellState>1</cellState>
+      <toState>0</toState>
+    </Rule>
+    <Rule>
+      <condition class="equal">
+        <number>5</number>
+        <applyState>0</applyState>
+      </condition>
+      <cellState>0</cellState>
+      <toState>2</toState>
+    </Rule>
+  </rules>
+</modularAutomata>
